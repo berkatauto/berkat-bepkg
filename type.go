@@ -36,10 +36,11 @@ func NewArticle(title, tags string) *Article {
 	}
 }
 
-func NewVideoArticle(title, tags string) *VideoArticle {
+func NewVideoArticle(title, tags, video string) *VideoArticle {
 	return &VideoArticle{
 		Title: title,
 		Tags:  tags,
+		Video: video,
 	}
 }
 
