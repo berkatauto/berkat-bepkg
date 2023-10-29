@@ -17,8 +17,8 @@ func SetConnection(MONGOCONNSTRINGENV, dbname string) *mongo.Database {
 }
 
 func GetArticle(mongoconn *mongo.Database, collection string) []Article {
-	lokasi := atdb.GetAllDoc[[]Article](mongoconn, collection)
-	return lokasi
+	artikel := atdb.GetAllDoc[[]Article](mongoconn, collection)
+	return artikel
 }
 
 func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User) bool {
