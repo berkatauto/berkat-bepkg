@@ -11,15 +11,9 @@ import (
 
 func TestListArticle() {
 	mconn := SetConnection("MONGODATA", "berkatauto")
-	Article := GetArticle(mconn, "")
-	fmt.Println(Article)
+	dataarticle := GetArticle(mconn, "")
+	fmt.Println(dataarticle)
 }
-
-// func TestUpdateGetData(t *testing.T) {
-// 	mconn := SetConnection("MONGODATA", "berkatauto")
-// 	datagedung := GetAllBangunanLineString(mconn, "berkatauto")
-// 	fmt.Println(datagedung)
-// }
 
 func TestGeneratePasswordHash(t *testing.T) {
 	password := "secret"
