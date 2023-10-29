@@ -1,6 +1,9 @@
 package berkatbepkg
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type Article struct {
 	Title string `json:"title" bson:"title"`
