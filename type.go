@@ -10,6 +10,12 @@ type Article struct {
 	Tags  string `json:"tags" bson:"tags"`
 }
 
+type VideoArticle struct {
+	Title string `json:"title" bson:"title"`
+	Tags  string `json:"tags" bson:"tags"`
+	Video string `json:"video" bson:"video"`
+}
+
 type User struct {
 	Username string `json:"username" bson:"username"`
 	Password string `json:"password" bson:"password"`
@@ -25,6 +31,13 @@ type Credential struct {
 // NewArticle adalah fungsi pembuat untuk membuat instance baru dari Article
 func NewArticle(title, tags string) *Article {
 	return &Article{
+		Title: title,
+		Tags:  tags,
+	}
+}
+
+func NewVideoArticle(title, tags string) *VideoArticle {
+	return &VideoArticle{
 		Title: title,
 		Tags:  tags,
 	}

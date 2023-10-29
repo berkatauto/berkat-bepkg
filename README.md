@@ -1,22 +1,24 @@
 # berkat-bepkg - Dokumentasi
 
-Package Backend untuk aplikasi website Berkat Auto.
+Package Backend khusus untuk aplikasi website Berkat Auto.
 
 ## Update library untuk backend ini
 
 ```
 go get -u all
 go mod tidy
-git tag
-git tag v1.0.0
-git push origin --tags
-go list -m github.com/berkatauto/berkat-bepkg@v1.0.0
+git tag                                                 # Cek version untuk package ini
+git tag v1.0.0                                          # Set version untuk package ini
+git push origin --tags                                  # Push Package dengan Version
+go list -m github.com/berkatauto/berkat-bepkg@v1.0.0    # Publish Package ke pkg.go.dev
 ```
 
 ## Cara Install Package ini
 
-Untuk mengintal package ini cukup mudah. Buat Project Golangmu dan masukkan command berikut.
+Untuk menginstal package ini cukup mudah. Buat Project Golangmu dan masukkan command berikut.
 
 ```
 go get github.com/berkatauto/berkat-bepkg
 ```
+
+Package siap langsung pakai.

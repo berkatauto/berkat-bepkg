@@ -8,6 +8,12 @@ import (
 	"github.com/whatsauth/watoken"
 )
 
+func GCFHandler(MONGODATA, dbname, collectionname string) string {
+	mconn := SetConnection(MONGODATA, dbname)
+	dataarticle := GetArticle(mconn, collectionname)
+	return GCFReturnStruct(dataarticle)
+}
+
 func GCFPostHandler(PASETOPRIV, MONGODATA, dbname, collectionname string, r *http.Request) string {
 	var Response Credential
 	Response.Status = false

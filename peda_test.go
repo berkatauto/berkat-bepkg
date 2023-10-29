@@ -9,6 +9,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+func TestListArticle() {
+	mconn := SetConnection("MONGODATA", "berkatauto")
+	Article := GetArticle(mconn, "")
+	fmt.Println(Article)
+}
+
 // func TestUpdateGetData(t *testing.T) {
 // 	mconn := SetConnection("MONGODATA", "berkatauto")
 // 	datagedung := GetAllBangunanLineString(mconn, "berkatauto")
@@ -16,7 +22,7 @@ import (
 // }
 
 func TestGeneratePasswordHash(t *testing.T) {
-	password := "12345"
+	password := "secret"
 	hash, _ := HashPassword(password) // ignore error for the sake of simplicity
 
 	fmt.Println("Password:", password)
@@ -37,7 +43,7 @@ func TestHashFunction(t *testing.T) {
 	mconn := SetConnection("MONGODATA", "berkatauto")
 	var userdata User
 	userdata.Username = "admin"
-	userdata.Password = "12345"
+	userdata.Password = "secret"
 
 	filter := bson.M{"username": userdata.Username}
 	res := atdb.GetOneDoc[User](mconn, "userLogin", filter)
@@ -53,7 +59,7 @@ func TestIsPasswordValid(t *testing.T) {
 	mconn := SetConnection("MONGODATA", "berkatauto")
 	var userdata User
 	userdata.Username = "admin"
-	userdata.Password = "12345"
+	userdata.Password = "secret"
 
 	anu := IsPasswordValid(mconn, "userLogin", userdata)
 	fmt.Println(anu)
