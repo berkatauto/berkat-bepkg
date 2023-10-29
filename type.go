@@ -1,8 +1,23 @@
 package berkatbepkg
 
+import "fmt"
+
 type Article struct {
 	Title string `json:"title" bson:"title"`
 	Tags  string `json:"tags" bson:"tags"`
+}
+
+// NewArticle adalah fungsi pembuat untuk membuat instance baru dari Article
+func NewArticle(title, tags string) *Article {
+    return &Article{
+        Title: title,
+        Tags: tags,
+    }
+}
+
+// PrintInfo adalah metode untuk mencetak informasi artikel ke layar
+func (a *Article) PrintInfo() {
+    fmt.Printf("Title: %s\nContent: %s\n", a.Title, a.Content)
 }
 
 type User struct {
