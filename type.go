@@ -9,16 +9,21 @@ type Article struct {
 
 // NewArticle adalah fungsi pembuat untuk membuat instance baru dari Article
 func NewArticle(title, tags string) *Article {
-    return &Article{
-        Title: title,
-        Tags: tags,
-    }
+	return &Article{
+		Title: title,
+		Tags:  tags,
+	}
 }
 
-// PrintInfo adalah metode untuk mencetak informasi artikel ke layar
-func (a *Article) PrintInfo() {
-    fmt.Printf("Title: %s\nContent: %s\n", a.Title, a.Content)
+// ToJSON mengonversi objek Article ke format JSON
+func (a *Article) ToJSON() (string, error) {
+	jsonData, err := json.Marshal(a)
+	if err != nil {
+		return "", err
+	}
+	return string(jsonData), nil
 }
+
 
 type User struct {
 	Username string `json:"username" bson:"username"`
