@@ -1,4 +1,4 @@
-package berkatbepkg
+package peda
 
 import "golang.org/x/crypto/bcrypt"
 

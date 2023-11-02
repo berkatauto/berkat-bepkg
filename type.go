@@ -1,19 +1,44 @@
-package berkatbepkg
+package peda
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-type Article struct {
-	Title string `json:"title" bson:"title"`
-	Tags  string `json:"tags" bson:"tags"`
+type GeometryPolygon struct {
+	Coordinates [][][]float64 `json:"coordinates" bson:"coordinates"`
+	Type        string        `json:"type" bson:"type"`
 }
 
-type VideoArticle struct {
-	Title string `json:"title" bson:"title"`
-	Tags  string `json:"tags" bson:"tags"`
-	Video string `json:"video" bson:"video"`
+type GeometryLineString struct {
+	Coordinates [][]float64 `json:"coordinates" bson:"coordinates"`
+	Type        string      `json:"type" bson:"type"`
+}
+
+type GeometryPoint struct {
+	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
+	Type        string    `json:"type" bson:"type"`
+}
+
+type GeoJsonLineString struct {
+	Type       string             `json:"type" bson:"type"`
+	Properties Properties         `json:"properties" bson:"properties"`
+	Geometry   GeometryLineString `json:"geometry" bson:"geometry"`
+}
+
+type GeoJsonPolygon struct {
+	Type       string          `json:"type" bson:"type"`
+	Properties Properties      `json:"properties" bson:"properties"`
+	Geometry   GeometryPolygon `json:"geometry" bson:"geometry"`
+}
+
+type Geometry struct {
+	Coordinates interface{} `json:"coordinates" bson:"coordinates"`
+	Type        string      `json:"type" bson:"type"`
+}
+type GeoJson struct {
+	Type       string     `json:"type" bson:"type"`
+	Properties Properties `json:"properties" bson:"properties"`
+	Geometry   Geometry   `json:"geometry" bson:"geometry"`
+}
+
+type Properties struct {
+	Name string `json:"name" bson:"name"`
 }
 
 type User struct {
@@ -26,34 +51,4 @@ type Credential struct {
 	Status  bool   `json:"status" bson:"status"`
 	Token   string `json:"token,omitempty" bson:"token,omitempty"`
 	Message string `json:"message,omitempty" bson:"message,omitempty"`
-}
-
-// NewArticle adalah fungsi pembuat untuk membuat instance baru dari Article
-func NewArticle(title, tags string) *Article {
-	return &Article{
-		Title: title,
-		Tags:  tags,
-	}
-}
-
-func NewVideoArticle(title, tags, video string) *VideoArticle {
-	return &VideoArticle{
-		Title: title,
-		Tags:  tags,
-		Video: video,
-	}
-}
-
-// ToJSON mengonversi objek Article ke format JSON
-func (a *Article) ToJSON() (string, error) {
-	jsonData, err := json.Marshal(a)
-	if err != nil {
-		return "", err
-	}
-	return string(jsonData), nil
-}
-
-// PrintInfo mencetak informasi artikel ke layar
-func (a *Article) PrintInfo() {
-	fmt.Printf("Title: %s\nTags: %s\n", a.Title, a.Tags)
 }
