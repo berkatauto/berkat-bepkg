@@ -11,6 +11,7 @@ type Article struct {
 	Content  Content `json:"contect" bson:"content"`
 }
 
+//Menyimpan daftar tags dan mengonversi objek
 type Tags struct {
 	Tag string `json:"tag" bson:"tag"`
 }
