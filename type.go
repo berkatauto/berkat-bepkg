@@ -2,6 +2,7 @@ package berkatbepkg
 
 import "encoding/base64"
 
+//Menyimpan data dan mengonversi objek
 type Article struct {
 	Author   string  `json:"author" bson:"author"`
 	Title    string  `json:"title" bson:"title"`
