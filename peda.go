@@ -45,22 +45,25 @@ func GCFReturnStruct(DataStuct any) string {
 	return string(jsondata)
 }
 
-// func CreateUser(mongoenv, dbname, collname string, r *http.Request) string {
-// 	var response Credential
-// 	response.Status = false
-// 	mconn := SetConnection(mongoenv, dbname)
-// 	var datauser User
-// 	err := json.NewDecoder(r.Body).Decode(&datauser)
-// 	if err != nil {
-// 		response.Message = "error parsing application/json: " + err.Error()
-// 	} else {
-// 		response.Status = true
-// 		hash, hashErr := HashPassword(datauser.Password)
-// 		if hashErr != nil {
-// 			response.Message = "Gagal Hash Password" + err.Error()
-// 		}
-// 		(mconn, collname, datauser.Username, datauser.Role, hash)
-// 		response.Message = "Berhasil Input data"
-// 	}
-// 	return GCFReturnStruct(response)
-// }
+func CreateUser(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	var response Credential
+	response.Status = false
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var datauser User
+	err := json.NewDecoder(r.Body).Decode(&datauser)
+	if err != nil {
+		response.Message = "error parsing application/json: " + err.Error()
+	} else {
+		response.Status = true
+		hash, hashErr := HashPassword(datauser.Password)
+		if hashErr != nil {
+			response.Message = "Gagal Hash Password" + err.Error()
+		}
+		else 
+		{
+			(mconn, collectionname, datauser.Username, datauser.Role, hash)
+			response.Message = "Berhasil Input data"
+		}
+	}
+	return GCFReturnStruct(response)
+}
