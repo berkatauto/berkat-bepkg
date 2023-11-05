@@ -1,20 +1,32 @@
 package berkatbepkg
 
+import "encoding/base64"
+
 type Article struct {
-	Author   string `json:"author" bson:"author"`
-	Title    string `json:"title" bson:"title"`
-	Category string `json:"category" bson:"category"`
-	Tags     string `json:"tags" bson:"tags"`
-	Content  string `json:"contect" bson:"content"`
+	Author   string  `json:"author" bson:"author"`
+	Title    string  `json:"title" bson:"title"`
+	Category string  `json:"category" bson:"category"`
+	Tags     Tags    `json:"tags" bson:"tags"`
+	Content  Content `json:"contect" bson:"content"`
 }
 
-type VideoArticle struct {
-	Author   string `json:"author" bson:"author"`
-	Title    string `json:"title" bson:"title"`
-	Category string `json:"category" bson:"category"`
-	Tags     string `json:"tags" bson:"tags"`
-	Video    string `json:"video" bson:"video"`
+type Tags struct {
+	Tag string `json:"tag" bson:"tag"`
 }
+
+type Content struct {
+	ImageHeader  base64.Encoding `json:"image_encode" bson:"image_encode"`
+	Paragraph    string          `json:"paragraph" bson:"paragraph"`
+	VideoContent string          `json:"video_link" bson:"video_link"` // If available, the video will automatically declared to be embedded.
+}
+
+// type VideoArticle struct {
+// 	Author   string `json:"author" bson:"author"`
+// 	Title    string `json:"title" bson:"title"`
+// 	Category string `json:"category" bson:"category"`
+// 	Tags     string `json:"tags" bson:"tags"`
+// 	Video    string `json:"video" bson:"video"`
+// }
 
 type User struct {
 	Fullname      string `json:"fullname" bson:"fullname"`
