@@ -1,4 +1,4 @@
-package peda
+package berkatbepkg
 
 import (
 	"fmt"

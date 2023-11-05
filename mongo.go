@@ -1,4 +1,4 @@
-package peda
+package berkatbepkg
 
 import (
 	"os"
@@ -23,7 +23,7 @@ func GetAllBangunanLineString(mongoconn *mongo.Database, collection string) []Ge
 
 func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User) bool {
 	filter := bson.M{"username": userdata.Username}
-	res := atdb.GetOneDoc[User](mongoconn, collection, filter)
+	res := atdb.GetOneDoc[User] (mongoconn, collection, filter)
 	return CheckPasswordHash(userdata.Password, res.Password)
 }
 
