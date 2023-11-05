@@ -1,3 +1,25 @@
+package berkatbepkg
+
+type Article struct {
+	Title string `json:"title" bson:"title"`
+	Tags  string `json:"tags" bson:"tags"`
+}
+
+type User struct {
+	Username string `json:"username" bson:"username"`
+	Password string `json:"password" bson:"password"`
+	Role     string `json:"role,omitempty" bson:"role,omitempty"`
+}
+
+type Credential struct {
+	Status  bool   `json:"status" bson:"status"`
+	Token   string `json:"token,omitempty" bson:"token,omitempty"`
+	Message string `json:"message,omitempty" bson:"message,omitempty"`
+}
+type Properties struct {
+	Name string `json:"name" bson:"name"`
+}
+/*
 package peda
 
 type GeometryPolygon struct {
@@ -52,3 +74,4 @@ type Credential struct {
 	Token   string `json:"token,omitempty" bson:"token,omitempty"`
 	Message string `json:"message,omitempty" bson:"message,omitempty"`
 }
+*/
