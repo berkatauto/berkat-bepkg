@@ -2,7 +2,6 @@ package berkatbepkg
 
 import "encoding/base64"
 
-//Menyimpan data dan mengonversi objek
 type Article struct {
 	Author   string  `json:"author" bson:"author"`
 	Title    string  `json:"title" bson:"title"`
@@ -11,7 +10,6 @@ type Article struct {
 	Content  Content `json:"contect" bson:"content"`
 }
 
-//Menyimpan daftar tags dan mengonversi objek
 type Tags struct {
 	Tag string `json:"tag" bson:"tag"`
 }
