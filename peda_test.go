@@ -1,4 +1,4 @@
-package peda
+package berkatbepkg
 
 import (
 	"fmt"
@@ -9,10 +9,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func TestUpdateGetData(t *testing.T) {
-	mconn := SetConnection("MONGOULBI", "petapedia")
-	datagedung := GetAllBangunanLineString(mconn, "petapedia")
-	fmt.Println(datagedung)
+func TestListArticle() {
+	mconn := SetConnection("MONGODATA", "berkatauto")
+	dataarticle := GetArticle(mconn, "articleSet")
+	fmt.Println(dataarticle)
 }
 
 func TestGeneratePasswordHash(t *testing.T) {
@@ -29,18 +29,18 @@ func TestGeneratePrivateKeyPaseto(t *testing.T) {
 	privateKey, publicKey := watoken.GenerateKey()
 	fmt.Println(privateKey)
 	fmt.Println(publicKey)
-	hasil, err := watoken.Encode("petped", privateKey)
+	hasil, err := watoken.Encode("admin", privateKey)
 	fmt.Println(hasil, err)
 }
 
 func TestHashFunction(t *testing.T) {
-	mconn := SetConnection("MONGOULBI", "petapedia")
+	mconn := SetConnection("MONGODATA", "berkatauto")
 	var userdata User
-	userdata.Username = "petped"
+	userdata.Username = "admin"
 	userdata.Password = "secret"
 
 	filter := bson.M{"username": userdata.Username}
-	res := atdb.GetOneDoc[User](mconn, "user", filter)
+	res := atdb.GetOneDoc[User](mconn, "userLogin", filter)
 	fmt.Println("Mongo User Result: ", res)
 	hash, _ := HashPassword(userdata.Password)
 	fmt.Println("Hash Password : ", hash)
@@ -50,11 +50,11 @@ func TestHashFunction(t *testing.T) {
 }
 
 func TestIsPasswordValid(t *testing.T) {
-	mconn := SetConnection("MONGOULBI", "petapedia")
+	mconn := SetConnection("MONGODATA", "berkatauto")
 	var userdata User
-	userdata.Username = "petped"
+	userdata.Username = "admin"
 	userdata.Password = "secret"
 
-	anu := IsPasswordValid(mconn, "user", userdata)
+	anu := IsPasswordValid(mconn, "userLogin", userdata)
 	fmt.Println(anu)
 }

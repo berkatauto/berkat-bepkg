@@ -1,4 +1,4 @@
-package peda
+package berkatbepkg
 
 import (
 	"encoding/json"
@@ -10,8 +10,8 @@ import (
 
 func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-	datagedung := GetAllBangunanLineString(mconn, collectionname)
-	return GCFReturnStruct(datagedung)
+	dataarticle := GetArticle(mconn, collectionname)
+	return GCFReturnStruct(dataarticle)
 }
 
 func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
@@ -29,11 +29,11 @@ func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionn
 			if err != nil {
 				Response.Message = "Gagal Encode Token : " + err.Error()
 			} else {
-				Response.Message = "Selamat Datang"
+				Response.Message = "Welcome!"
 				Response.Token = tokenstring
 			}
 		} else {
-			Response.Message = "Password Salah"
+			Response.Message = "Password Salah! Silahkan Coba Lagi."
 		}
 	}
 
@@ -45,22 +45,22 @@ func GCFReturnStruct(DataStuct any) string {
 	return string(jsondata)
 }
 
-func CreateUser(mongoenv, dbname, collname string, r *http.Request) string {
-	var response Credential
-	response.Status = false
-	mconn := SetConnection(mongoenv, dbname)
-	var datauser User
-	err := json.NewDecoder(r.Body).Decode(&datauser)
-	if err != nil {
-		response.Message = "error parsing application/json: " + err.Error()
-	} else {
-		response.Status = true
-		hash, hashErr := HashPassword(datauser.Password)
-		if hashErr != nil {
-			response.Message = "Gagal Hash Password" + err.Error()
-		}
-		InsertUserdata(mconn, collname, datauser.Username, datauser.Role, hash)
-		response.Message = "Berhasil Input data"
-	}
-	return GCFReturnStruct(response)
-}
+// func CreateUser(mongoenv, dbname, collname string, r *http.Request) string {
+// 	var response Credential
+// 	response.Status = false
+// 	mconn := SetConnection(mongoenv, dbname)
+// 	var datauser User
+// 	err := json.NewDecoder(r.Body).Decode(&datauser)
+// 	if err != nil {
+// 		response.Message = "error parsing application/json: " + err.Error()
+// 	} else {
+// 		response.Status = true
+// 		hash, hashErr := HashPassword(datauser.Password)
+// 		if hashErr != nil {
+// 			response.Message = "Gagal Hash Password" + err.Error()
+// 		}
+// 		(mconn, collname, datauser.Username, datauser.Role, hash)
+// 		response.Message = "Berhasil Input data"
+// 	}
+// 	return GCFReturnStruct(response)
+// }
