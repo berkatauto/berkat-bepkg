@@ -37,6 +37,6 @@ func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User
 	return CheckPasswordHash(userdata.Password, res.Password)
 }
 
-func PostArticle(mongoconn *mongo.Database, collection string, Article) interface{} {
+func PostArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
 	return atdb.InsertOneDoc(mongoconn, collection, articleData)
 }
