@@ -44,7 +44,6 @@ type Credential struct {
 }
 
 /*
-package peda
 
 type GeometryPolygon struct {
 	Coordinates [][][]float64 `json:"coordinates" bson:"coordinates"`
