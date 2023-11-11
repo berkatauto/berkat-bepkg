@@ -81,6 +81,17 @@ func GCFReturnStruct(DataStuct any) string {
 	return string(jsondata)
 }
 
+func GCFSearchArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var searcharticle Article
+	err := json.NewDecoder(r.Body).Decode(&searcharticle)
+	if err != nil {
+		return err.Error()
+	}
+	find := SearchArticle(mconn, collectionname, searcharticle)
+	return GCFReturnStruct(find)
+}
+
 func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	var newarticle Article

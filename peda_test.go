@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func TestListArticle() {
+func TestGCFListArticle() {
 	mconn := SetConnection("MONGODATA", "berkatauto")
 	dataarticle := GetArticle(mconn, "articleSet")
 	fmt.Println(dataarticle)
