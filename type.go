@@ -43,23 +43,6 @@ type Credential struct {
 }
 
 /*
-
-type GeoJsonPolygon struct {
-	Type       string          `json:"type" bson:"type"`
-	Properties Properties      `json:"properties" bson:"properties"`
-	Geometry   GeometryPolygon `json:"geometry" bson:"geometry"`
-}
-
-type Geometry struct {
-	Coordinates interface{} `json:"coordinates" bson:"coordinates"`
-	Type        string      `json:"type" bson:"type"`
-}
-type GeoJson struct {
-	Type       string     `json:"type" bson:"type"`
-	Properties Properties `json:"properties" bson:"properties"`
-	Geometry   Geometry   `json:"geometry" bson:"geometry"`
-}
-
 type Properties struct {
 	Name string `json:"name" bson:"name"`
 }
