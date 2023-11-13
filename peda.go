@@ -3,10 +3,8 @@ package berkatbepkg
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/whatsauth/watoken"
 )
@@ -17,14 +15,13 @@ func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
 	return GCFReturnStruct(dataarticle)
 }
 
-func UserRandomNumber() {
-	source := rand.NewSource(time.Now().UnixNano())
-	rand_source := rand.New(source)
-	for i := 0; i < 5; i++ {
-		rand_num := rand_source.Int()
-		fmt.Println(rand_num)
-	}
-}
+// func UserRandomNumber(randomnumber string) {
+// 	source := rand.NewSource(time.Now().UnixNano())
+// 	rand_source := rand.New(source)
+// 	for i := 0; i < 5; i++ {
+// 		rand_num := rand_source.Int()
+// 	}
+// }
 
 func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	var Response Credential
