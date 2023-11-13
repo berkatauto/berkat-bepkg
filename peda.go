@@ -15,6 +15,7 @@ func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
 	return GCFReturnStruct(dataarticle)
 }
 
+// Ini masih kepakai, jangan dihapus dulu
 // func UserRandomNumber(randomnumber string) {
 // 	source := rand.NewSource(time.Now().UnixNano())
 // 	rand_source := rand.New(source)
@@ -103,7 +104,7 @@ func GCFCreateAccountAndToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, c
 		return hashErr.Error()
 	}
 	datauser.Password = hashedPassword
-	CreateUserAndAddedToeken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
+	CreateUserAndAddedToken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
 	return GCFReturnStruct(datauser)
 }
 
@@ -161,8 +162,28 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	return response
 }
 
-func GCFBuildContent() {
+// func GCFBuildContent(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 
+// }
+
+func GCFSearchArticleByTags(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var tagarticle Tags
+	err := json.NewDecoder(r.Body).Decode(&tagarticle)
+	if err != nil {
+		return err.Error()
+	}
+	if tagarticle.Tag == "" {
+		return "false"
+	}
+
+	tagresult := FindTag(mconn, collectionname, tagarticle)
+
+	if tagresult != (Tags{}) {
+		return GCFReturnStruct(tagresult)
+	}
+
+	return "false"
 }
 
 func GCFSearchArticleByUserId(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {

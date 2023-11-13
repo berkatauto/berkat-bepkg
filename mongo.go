@@ -93,3 +93,10 @@ func FindAuthor(mongoconn *mongo.Database, collection string, author Article) Ar
 	}
 	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
 }
+
+func FindTag(mongoconn *mongo.Database, collection string, searchtag Tags) Tags {
+	filter := bson.M{
+		"tag": searchtag.Tag,
+	}
+	return atdb.GetOneDoc[Tags](mongoconn, collection, filter)
+}

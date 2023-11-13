@@ -27,9 +27,27 @@ func TestCreateNewUserRole(t *testing.T) {
 	CreateNewUserRole(mconn, "userLogin", userdata)
 }
 
+// func TestCreateArticle(t *testing.T) {
+// 	var dataarticle Article
+// 	var tagged Tags
+// 	var isikonten Content
+// 	// Tags
+// 	tagged.Tag = "Mesin, " + "Ilmu Pengetahuan, " + "Teknologi"
+// 	// Content
+// 	isikonten.ImageHeader = ""
+// 	isikonten.Paragraph = "HA"
+// 	isikonten.VideoContent = "none"
+// 	// Craft All to new Article
+// 	dataarticle.Author = "Rendy Kuswari"
+// 	dataarticle.Title = "Pendidikan : Sejarah Mobil"
+// 	dataarticle.Category = "Pendidikan Otomotif"
+// 	dataarticle.Tags = tagged
+// 	dataarticle.Content = isikonten
+// }
+
 func TestGeneratePasswordHash(t *testing.T) {
 	password := "12345"
-	hash, _ := HashPassword(password) // ignore error for the sake of simplicity
+	hash, _ := HashPassword(password)
 
 	fmt.Println("Password:", password)
 	fmt.Println("Hash:    ", hash)
@@ -39,7 +57,6 @@ func TestGeneratePasswordHash(t *testing.T) {
 }
 
 // func TestUserRandomNumber(t *testing.T) {
-
 // }
 
 func TestGeneratePrivateKeyPaseto(t *testing.T) {
