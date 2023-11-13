@@ -44,17 +44,6 @@ type Credential struct {
 
 /*
 
-type GeometryPoint struct {
-	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
-	Type        string    `json:"type" bson:"type"`
-}
-
-type GeoJsonLineString struct {
-	Type       string             `json:"type" bson:"type"`
-	Properties Properties         `json:"properties" bson:"properties"`
-	Geometry   GeometryLineString `json:"geometry" bson:"geometry"`
-}
-
 type GeoJsonPolygon struct {
 	Type       string          `json:"type" bson:"type"`
 	Properties Properties      `json:"properties" bson:"properties"`
