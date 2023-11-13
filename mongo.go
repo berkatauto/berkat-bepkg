@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/aiteung/atdb"
+	"github.com/whatsauth/watoken"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -51,4 +52,44 @@ func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User
 
 func PostArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
 	return atdb.InsertOneDoc(mongoconn, collection, articleData)
+}
+
+func CreateNewUserRole(mongoconn *mongo.Database, collection string, userdata User) interface{} {
+	// Hash the password before storing it
+	hashedPassword, err := HashPassword(userdata.Password)
+	if err != nil {
+		return err
+	}
+	userdata.Password = hashedPassword
+
+	// Insert the user data into the database
+	return atdb.InsertOneDoc(mongoconn, collection, userdata)
+}
+
+func CreateUserAndAddedToeken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Database, collection string, userdata User) interface{} {
+	// Hash the password before storing it
+	hashedPassword, err := HashPassword(userdata.Password)
+	if err != nil {
+		return err
+	}
+	userdata.Password = hashedPassword
+
+	// Insert the user data into the database
+	atdb.InsertOneDoc(mongoconn, collection, userdata)
+
+	// Create a token for the user
+	tokenstring, err := watoken.Encode(userdata.Username, os.Getenv(PASETOPRIVATEKEYENV))
+	if err != nil {
+		return err
+	}
+	userdata.Token = tokenstring
+
+	// Update the user data in the database
+	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"username": userdata.Username}, userdata)
+}
+func FindAuthor(mongoconn *mongo.Database, collection string, author Article) Article {
+	filter := bson.M{
+		"author": author.Author,
+	}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
 }

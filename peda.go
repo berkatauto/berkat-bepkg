@@ -3,18 +3,27 @@ package berkatbepkg
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"os"
+	"time"
 
-	"github.com/aiteung/atdb"
 	"github.com/whatsauth/watoken"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	dataarticle := GetArticle(mconn, collectionname)
 	return GCFReturnStruct(dataarticle)
+}
+
+func UserRandomNumber() {
+	source := rand.NewSource(time.Now().UnixNano())
+	rand_source := rand.New(source)
+	for i := 0; i < 5; i++ {
+		rand_num := rand_source.Int()
+		fmt.Println(rand_num)
+	}
 }
 
 func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
@@ -64,16 +73,62 @@ func GCFCreateUser(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 	return GCFReturnStruct(datauser)
 }
 
-func CreateNewUserRole(mongoconn *mongo.Database, collection string, userdata User) interface{} {
-	// Hash the password before storing it
-	hashedPassword, err := HashPassword(userdata.Password)
+func GCFCreateHandlerTokenPaseto(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var datauser User
+	err := json.NewDecoder(r.Body).Decode(&datauser)
 	if err != nil {
-		return err
+		return err.Error()
 	}
-	userdata.Password = hashedPassword
+	hashedPassword, hashErr := HashPassword(datauser.Password)
+	if hashErr != nil {
+		return hashErr.Error()
+	}
+	datauser.Password = hashedPassword
+	CreateNewUserRole(mconn, collectionname, datauser)
+	tokenstring, err := watoken.Encode(datauser.Username, os.Getenv(PASETOPRIVATEKEYENV))
+	if err != nil {
+		return err.Error()
+	}
+	datauser.Token = tokenstring
+	return GCFReturnStruct(datauser)
+}
 
-	// Insert the user data into the database
-	return atdb.InsertOneDoc(mongoconn, collection, userdata)
+func GCFCreateAccountAndToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var datauser User
+	err := json.NewDecoder(r.Body).Decode(&datauser)
+	if err != nil {
+		return err.Error()
+	}
+	hashedPassword, hashErr := HashPassword(datauser.Password)
+	if hashErr != nil {
+		return hashErr.Error()
+	}
+	datauser.Password = hashedPassword
+	CreateUserAndAddedToeken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
+	return GCFReturnStruct(datauser)
+}
+
+func GCFCreateHandler(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var datauser User
+	err := json.NewDecoder(r.Body).Decode(&datauser)
+	if err != nil {
+		return err.Error()
+	}
+
+	// Hash the password before storing it
+	hashedPassword, hashErr := HashPassword(datauser.Password)
+	if hashErr != nil {
+		return hashErr.Error()
+	}
+	datauser.Password = hashedPassword
+
+	createErr := CreateNewUserRole(mconn, collectionname, datauser)
+	fmt.Println(createErr)
+
+	return GCFReturnStruct(datauser)
 }
 
 func GCFReturnStruct(DataStuct any) string {
@@ -107,4 +162,28 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	// response += "PASETO Value: " + pasetoValue
 	PostArticle(mconn, collectionname, newarticle)
 	return response
+}
+
+func GCFBuildContent() {
+
+}
+
+func GCFSearchArticleByUserId(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var userarticle Article
+	err := json.NewDecoder(r.Body).Decode(&userarticle)
+	if err != nil {
+		return err.Error()
+	}
+	if userarticle.Author == "" {
+		return "false"
+	}
+
+	author := FindAuthor(mconn, collectionname, userarticle)
+
+	if author != (Article{}) {
+		return GCFReturnStruct(author)
+	}
+
+	return "false"
 }

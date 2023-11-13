@@ -9,10 +9,22 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func TestGCFListArticle() {
-	mconn := SetConnection("MONGODATA", "berkatauto")
-	dataarticle := GetArticle(mconn, "articleSet")
-	fmt.Println(dataarticle)
+// Sewaktu waktu ini masih bisa dipakai, jangan dihapus dulu ya.
+// func TestGCFListArticle() {
+// 	mconn := SetConnection("MONGOSTRING", "berkatauto")
+// 	dataarticle := GetArticle(mconn, "articleSet")
+// 	fmt.Println(dataarticle)
+// }
+
+func TestCreateNewUserRole(t *testing.T) {
+	var userdata User
+	userdata.Fullname = "Adam Ghafara"
+	userdata.Username = "adam"
+	userdata.Password = "12345"
+	userdata.JournalStatus = true
+	userdata.Role = "admin"
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	CreateNewUserRole(mconn, "userLogin", userdata)
 }
 
 func TestGeneratePasswordHash(t *testing.T) {
@@ -25,6 +37,11 @@ func TestGeneratePasswordHash(t *testing.T) {
 	match := CheckPasswordHash(password, hash)
 	fmt.Println("Match:   ", match)
 }
+
+func TestUserRandomNumber(t *testing.T) {
+
+}
+
 func TestGeneratePrivateKeyPaseto(t *testing.T) {
 	privateKey, publicKey := watoken.GenerateKey()
 	fmt.Println(privateKey)
@@ -34,7 +51,7 @@ func TestGeneratePrivateKeyPaseto(t *testing.T) {
 }
 
 func TestHashFunction(t *testing.T) {
-	mconn := SetConnection("MONGODATA", "berkatauto")
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	var userdata User
 	userdata.Username = "admin"
 	userdata.Password = "secret"
@@ -50,10 +67,10 @@ func TestHashFunction(t *testing.T) {
 }
 
 func TestIsPasswordValid(t *testing.T) {
-	mconn := SetConnection("MONGODATA", "berkatauto")
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	var userdata User
-	userdata.Username = "admin"
-	userdata.Password = "secret"
+	userdata.Username = "adam"
+	userdata.Password = "12345"
 
 	anu := IsPasswordValid(mconn, "userLogin", userdata)
 	fmt.Println(anu)

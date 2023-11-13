@@ -32,7 +32,8 @@ type User struct {
 	Fullname      string `json:"fullname" bson:"fullname"`
 	Username      string `json:"username" bson:"username"`
 	Password      string `json:"password" bson:"password"`
-	JournalStatus string `json:"journal_bool" bson:"journal_bool"`
+	JournalStatus bool   `json:"journal_bool" bson:"journal_bool"`
+	Token         string `json:"token,omitempty" bson:"token,omitempty"`
 	Role          string `json:"role,omitempty" bson:"role,omitempty"`
 }
 
