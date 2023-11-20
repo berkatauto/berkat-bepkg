@@ -18,32 +18,33 @@ import (
 
 func TestCreateNewUserRole(t *testing.T) {
 	var userdata User
-	userdata.Fullname = "Adam Ghafara"
-	userdata.Username = "adam"
-	userdata.Password = "12345"
+	userdata.Fullname = "Rachma Nurhaliza"
+	userdata.Username = "rachma"
+	userdata.Password = "r123"
 	userdata.JournalStatus = true
 	userdata.Role = "admin"
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	CreateNewUserRole(mconn, "userLogin", userdata)
 }
 
-// func TestCreateArticle(t *testing.T) {
-// 	var dataarticle Article
-// 	var tagged Tags
-// 	var isikonten Content
-// 	// Tags
-// 	tagged.Tag = "Mesin, " + "Ilmu Pengetahuan, " + "Teknologi"
-// 	// Content
-// 	isikonten.ImageHeader = ""
-// 	isikonten.Paragraph = "HA"
-// 	isikonten.VideoContent = "none"
-// 	// Craft All to new Article
-// 	dataarticle.Author = "Rendy Kuswari"
-// 	dataarticle.Title = "Pendidikan : Sejarah Mobil"
-// 	dataarticle.Category = "Pendidikan Otomotif"
-// 	dataarticle.Tags = tagged
-// 	dataarticle.Content = isikonten
-// }
+func TestPostArticle(t *testing.T) {
+	var dataarticle Article
+	var tagged Tags
+	var isikonten Content
+	// Tags
+	tagged.Tag = "Mesin, " + "Ilmu Pengetahuan, " + "Teknologi"
+	// Content
+	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+	isikonten.VideoContent = "none"
+	// Craft All to new Article
+	dataarticle.Author = "Random Person"
+	dataarticle.Title = "Pendidikan : Sejarah Mobil"
+	dataarticle.Category = "Pendidikan Otomotif"
+	dataarticle.Tags = tagged
+	dataarticle.Content = isikonten
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	PostArticle(mconn, "articleSet", dataarticle)
+}
 
 func TestGeneratePasswordHash(t *testing.T) {
 	password := "12345"
@@ -63,15 +64,15 @@ func TestGeneratePrivateKeyPaseto(t *testing.T) {
 	privateKey, publicKey := watoken.GenerateKey()
 	fmt.Println(privateKey)
 	fmt.Println(publicKey)
-	hasil, err := watoken.Encode("adam", privateKey)
+	hasil, err := watoken.Encode("rachma", privateKey)
 	fmt.Println(hasil, err)
 }
 
 func TestHashFunction(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	var userdata User
-	userdata.Username = "adam"
-	userdata.Password = "12345"
+	userdata.Username = "rachma"
+	userdata.Password = "r123"
 
 	filter := bson.M{"username": userdata.Username}
 	res := atdb.GetOneDoc[User](mconn, "userLogin", filter)
@@ -86,8 +87,8 @@ func TestHashFunction(t *testing.T) {
 func TestIsPasswordValid(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	var userdata User
-	userdata.Username = "adam"
-	userdata.Password = "12345"
+	userdata.Username = "rachma"
+	userdata.Password = "r123"
 	anu := IsPasswordValid(mconn, "userLogin", userdata)
 	fmt.Println(anu)
 }

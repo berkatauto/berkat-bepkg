@@ -66,7 +66,7 @@ func CreateNewUserRole(mongoconn *mongo.Database, collection string, userdata Us
 	return atdb.InsertOneDoc(mongoconn, collection, userdata)
 }
 
-func CreateUserAndAddedToeken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Database, collection string, userdata User) interface{} {
+func CreateUserAndAddedToken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Database, collection string, userdata User) interface{} {
 	// Hash the password before storing it
 	hashedPassword, err := HashPassword(userdata.Password)
 	if err != nil {
