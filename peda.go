@@ -3,10 +3,13 @@ package berkatbepkg
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/whatsauth/watoken"
+	"go.mongodb.org/mongo-driver/mongo/gridfs"
 )
 
 func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
@@ -204,4 +207,38 @@ func GCFSearchArticleByUserId(MONGOCONNSTRINGENV, dbname, collectionname string,
 	}
 
 	return "false"
+}
+
+func GCFImageUploader(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+
+	// Read the image file
+	imagePath := "path/to/your/image.jpg"
+	imageData, err := ioutil.ReadFile(imagePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	bucket, err := gridfs.NewBucket(mconn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create a file in the GridFS bucket
+	uploadStream, err := bucket.OpenUploadStream("image.jpg")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer uploadStream.Close()
+
+	// Write the image data to the GridFS file
+	_, err = uploadStream.Write(imageData)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Image Upload Success.")
+
+	return "false" // Add this line to fix the "missing return" error
+
 }
