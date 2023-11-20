@@ -5,11 +5,12 @@ import (
 )
 
 type Article struct {
-	Author   string  `json:"author" bson:"author"`
-	Title    string  `json:"title" bson:"title"`
-	Category string  `json:"category" bson:"category"`
-	Tags     Tags    `json:"tags" bson:"tags"`
-	Content  Content `json:"contect" bson:"content"`
+	articleID int     `json:"article_id" bson:"article_id"`
+	Author    string  `json:"author" bson:"author"`
+	Title     string  `json:"title" bson:"title"`
+	Category  string  `json:"category" bson:"category"`
+	Tags      Tags    `json:"tags" bson:"tags"`
+	Content   Content `json:"contect" bson:"content"`
 }
 
 type Tags struct {

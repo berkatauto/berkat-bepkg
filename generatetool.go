@@ -11,4 +11,5 @@ func randomnumber() {
 	for i := 0; i < 5; i++ {
 		rand_num := rand_source.Int()
 	}
+	number := rand_num()
 }

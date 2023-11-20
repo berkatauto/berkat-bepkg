@@ -37,8 +37,9 @@ func TestPostArticle(t *testing.T) {
 	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
 	isikonten.VideoContent = "NVI"
 	// Craft All to new Article
+	dataarticle.articleID = 
 	dataarticle.Author = "Random Person"
-	dataarticle.Title = "Pendidikan : Sejarah Mobil"
+	dataarticle.Title = "Pendidikan : Apa Itu Mobil?"
 	dataarticle.Category = "Pendidikan Otomotif"
 	dataarticle.Tags = tagged
 	dataarticle.Content = isikonten
