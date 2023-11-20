@@ -18,7 +18,9 @@ go list -m github.com/berkatauto/berkat-bepkg@v1.0.0    # Publish Package ke pkg
 Untuk menginstal package ini cukup mudah. Buat Project Golangmu dan masukkan command berikut.
 
 ```
+go mod init "init kemana nih"
 go get github.com/berkatauto/berkat-bepkg
+go mod tidy
 ```
 
 Package siap langsung pakai.
