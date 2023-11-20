@@ -1,6 +1,8 @@
 package berkatbepkg
 
-import "encoding/base64"
+import (
+	"encoding/base64"
+)
 
 type Article struct {
 	Author   string  `json:"author" bson:"author"`
@@ -15,7 +17,7 @@ type Tags struct {
 }
 
 type Content struct {
-	ImageHeader  base64.Encoding `json:"image_encode" bson:"image_encode"`
+	ImageHeader  base64.Encoding `bson:"image_encode"`
 	Paragraph    string          `json:"paragraph" bson:"paragraph"`
 	VideoContent string          `json:"video_link" bson:"video_link"` // If available, the video will automatically declared to be embedded.
 }
