@@ -4,13 +4,17 @@ import (
 	"encoding/base64"
 )
 
+type RandomNumber struct {
+	random int `json:"random" bson:"random"`
+}
+
 type Article struct {
-	articleID int     `json:"article_id" bson:"article_id"`
-	Author    string  `json:"author" bson:"author"`
-	Title     string  `json:"title" bson:"title"`
-	Category  string  `json:"category" bson:"category"`
-	Tags      Tags    `json:"tags" bson:"tags"`
-	Content   Content `json:"contect" bson:"content"`
+	articleID RandomNumber `json:"article_id" bson:"article_id"`
+	Author    string       `json:"author" bson:"author"`
+	Title     string       `json:"title" bson:"title"`
+	Category  string       `json:"category" bson:"category"`
+	Tags      Tags         `json:"tags" bson:"tags"`
+	Content   Content      `json:"contect" bson:"content"`
 }
 
 type Tags struct {
