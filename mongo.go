@@ -22,10 +22,20 @@ func GetNameAndPassowrd(mongoconn *mongo.Database, collection string) []User {
 	return user
 }
 
-func SearchArticle(mongoconn *mongo.Database, collection string, searcharticle Article) Article {
-	filter := bson.M{"Title": searcharticle.Title,
-		"Category": searcharticle.Category,
-		"Tags":     searcharticle.Tags}
+func
+
+func SearchByCategory(mongoconn *mongo.Database, collection string, searchBy Article) Article {
+	filter := bson.M{"category": searchBy.Category}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
+}
+
+func SearchByTitle(mongoconn *mongo.Database, collection string, searchBy Article) Article {
+	filter := bson.M{"title": searchBy.Title}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
+}
+
+func SearchByTags(mongoconn *mongo.Database, collection string, searchBy Article) Article {
+	filter := bson.M{"tags": searchBy.Tags}
 	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
 }
 
@@ -55,11 +65,13 @@ func GetArticle(mongoconn *mongo.Database, collection string) []Article {
 }
 
 func UpdateArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
-	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"article_id": articleData.articleID}, articleData)
+	filter := bson.M{"title": articleData.Title}
+	return atdb.ReplaceOneDoc(mongoconn, collection, filter, articleData)
 }
 
 func DeleteArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
-	return atdb.DeleteOneDoc(mongoconn, collection, bson.M{"article_id": articleData.articleID})
+	filter := bson.M{"title": articleData.Title}
+	return atdb.DeleteOneDoc(mongoconn, collection, filter)
 }
 
 func CreateNewUserRole(mongoconn *mongo.Database, collection string, userdata User) interface{} {
@@ -94,18 +106,4 @@ func CreateUserAndAddedToken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Databa
 
 	// Update the user data in the database
 	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"username": userdata.Username}, userdata)
-}
-
-func FindAuthor(mongoconn *mongo.Database, collection string, author Article) Article {
-	filter := bson.M{
-		"author": author.Author,
-	}
-	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
-}
-
-func FindTag(mongoconn *mongo.Database, collection string, searchtag Tags) Tags {
-	filter := bson.M{
-		"tag": searchtag.Tag,
-	}
-	return atdb.GetOneDoc[Tags](mongoconn, collection, filter)
 }

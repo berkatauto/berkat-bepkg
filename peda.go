@@ -140,14 +140,36 @@ func GCFReturnStruct(DataStuct any) string {
 	return string(jsondata)
 }
 
-func GCFSearchArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+func GCFSearchByCategory(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	var searcharticle Article
 	err := json.NewDecoder(r.Body).Decode(&searcharticle)
 	if err != nil {
 		return err.Error()
 	}
-	find := SearchArticle(mconn, collectionname, searcharticle)
+	find := SearchByCategory(mconn, collectionname, searcharticle)
+	return GCFReturnStruct(find)
+}
+
+func GCFSearchArticleByTitle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var searcharticle Article
+	err := json.NewDecoder(r.Body).Decode(&searcharticle)
+	if err != nil {
+		return err.Error()
+	}
+	find := SearchByTitle(mconn, collectionname, searcharticle)
+	return GCFReturnStruct(find)
+}
+
+func GCFSearchByTags(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var searcharticle Article
+	err := json.NewDecoder(r.Body).Decode(&searcharticle)
+	if err != nil {
+		return err.Error()
+	}
+	find := SearchByTags(mconn, collectionname, searcharticle)
 	return GCFReturnStruct(find)
 }
 
@@ -158,7 +180,6 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	if err != nil {
 		return err.Error()
 	}
-
 	// Get PASETO Header Value
 	// pasetoValue := r.Header.Set("PASETOPRIVATEKEYENV")
 	// Post The Article
@@ -168,28 +189,49 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	return response
 }
 
-func GCFUpdateArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request, newData Article) error {
-	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-	currentEdit := 
-	var newarticle Article
-	err := json.NewDecoder(r.Body).Decode(&newarticle)
-	if err != nil {
-		return err.Error()
-	}
+// func GCFUpdateArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+// 	var content Content
+// 	err := json.NewDecoder(r.Body).Decode(&content)
+// 	if err != nil {
+// 		return err.Error()
+// 	}
+// 	// Perform content building logic here
 
-	// Get PASETO Header Value
-	// pasetoValue := r.Header.Set("PASETOPRIVATEKEYENV")
-	// Post The Article
-	updating := GCFReturnStruct(newarticle)
-	response := "Update Successful."
-	// response += "PASETO Value: " + pasetoValue
-	UpdateArticle(mconn, collectionname, newarticle)
-	return updating, nil
-}
+// 	// Update the article
+// 	var updateArticle Article
+// 	err := json.NewDecoder(r.Body).Decode(&updateArticle)
+// 	if err != nil {
+// 		return "", err
+// 	}
+// 	response := GCFReturnStruct(updateArticle)
+// 	UpdateArticle(mconn, collectionname, updateArticle)
+// 	return response, nil
+// }
 
 // func GCFBuildContent(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 
 // }
+
+func SearchArticleByCategory(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var categoryarticle Article
+	err := json.NewDecoder(r.Body).Decode(&categoryarticle)
+	if err != nil {
+		return err.Error()
+	}
+	if categoryarticle.Category == "" {
+		return "false"
+	}
+
+	categoryresult := FindCategory(mconn, collectionname, categoryarticle)
+
+	if categoryresult != (Article{}) {
+		return GCFReturnStruct(categoryresult)
+	}
+
+	return "false"
+}
 
 func GCFSearchArticleByTags(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)

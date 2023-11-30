@@ -9,12 +9,11 @@ type articleID struct {
 }
 
 type Article struct {
-	articleID articleID `json:"article_id" bson:"article_id"`
-	Author    string    `json:"author" bson:"author"`
-	Title     string    `json:"title" bson:"title"`
-	Category  string    `json:"category" bson:"category"`
-	Tags      Tags      `json:"tags" bson:"tags"`
-	Content   Content   `json:"contect" bson:"content"`
+	Author   string  `json:"author" bson:"author"`
+	Title    string  `json:"title" bson:"title"`
+	Category string  `json:"category" bson:"category"`
+	Tags     Tags    `json:"tags" bson:"tags"`
+	Content  Content `json:"contect" bson:"content"`
 }
 
 type Tags struct {
