@@ -22,7 +22,10 @@ func GetNameAndPassowrd(mongoconn *mongo.Database, collection string) []User {
 	return user
 }
 
-func
+func SearchByAuthor(mongoconn *mongo.Database, collection string, searchBy Article) Article {
+	filter := bson.M{"author": searchBy.Author}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
+}
 
 func SearchByCategory(mongoconn *mongo.Database, collection string, searchBy Article) Article {
 	filter := bson.M{"category": searchBy.Category}

@@ -43,6 +43,7 @@ func TestPostArticle(t *testing.T) {
 	dataarticle.Category = "Tips"
 	dataarticle.Tags = tagged
 	dataarticle.Content = isikonten
+	// dataarticle.Date = time.Date.now.UTC()
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	PostArticle(mconn, "articleSet", dataarticle)
 }
@@ -79,6 +80,15 @@ func TestSearchByTags(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	SearchByTags(mconn, "articleSet", searchBy)
 }
+
+// func SearchByAuthor(t *testing.T) {
+// 	var searchBy Article
+// 	searchBy.Author = "Baba Rafi"
+// 	// searchBy.Category = "Tips"
+// 	// searchBy.Tags.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil"
+// 	mconn := SetConnection("MONGOSTRING", "berkatauto")
+// 	SearchByAuthor(mconn, "articleSet", searchBy)
+// }
 
 // func TestUpdateArticle(t *testing.T) {
 // 	var dataarticle Article

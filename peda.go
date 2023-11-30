@@ -142,16 +142,25 @@ func GCFReturnStruct(DataStuct any) string {
 
 func GCFSearchByCategory(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-	var searcharticle Article
-	err := json.NewDecoder(r.Body).Decode(&searcharticle)
+	var categoryarticle Article
+	err := json.NewDecoder(r.Body).Decode(&categoryarticle)
 	if err != nil {
 		return err.Error()
 	}
-	find := SearchByCategory(mconn, collectionname, searcharticle)
-	return GCFReturnStruct(find)
+	if categoryarticle.Category == "" {
+		return "false"
+	}
+
+	categoryresult := SearchByCategory(mconn, collectionname, categoryarticle)
+
+	if categoryresult != (Article{}) {
+		return GCFReturnStruct(categoryresult)
+	}
+
+	return "false"
 }
 
-func GCFSearchArticleByTitle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+func GCFSearchByTitle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	var searcharticle Article
 	err := json.NewDecoder(r.Body).Decode(&searcharticle)
@@ -170,6 +179,17 @@ func GCFSearchByTags(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.
 		return err.Error()
 	}
 	find := SearchByTags(mconn, collectionname, searcharticle)
+	return GCFReturnStruct(find)
+}
+
+func GCFSearchByAuthor(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var searcharticle Article
+	err := json.NewDecoder(r.Body).Decode(&searcharticle)
+	if err != nil {
+		return err.Error()
+	}
+	find := SearchByAuthor(mconn, collectionname, searcharticle)
 	return GCFReturnStruct(find)
 }
 
@@ -213,65 +233,65 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 
 // }
 
-func SearchArticleByCategory(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-	var categoryarticle Article
-	err := json.NewDecoder(r.Body).Decode(&categoryarticle)
-	if err != nil {
-		return err.Error()
-	}
-	if categoryarticle.Category == "" {
-		return "false"
-	}
+// func SearchArticleByCategory(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+// 	var categoryarticle Article
+// 	err := json.NewDecoder(r.Body).Decode(&categoryarticle)
+// 	if err != nil {
+// 		return err.Error()
+// 	}
+// 	if categoryarticle.Category == "" {
+// 		return "false"
+// 	}
 
-	categoryresult := FindCategory(mconn, collectionname, categoryarticle)
+// 	categoryresult := SearchByCategory(mconn, collectionname, categoryarticle)
 
-	if categoryresult != (Article{}) {
-		return GCFReturnStruct(categoryresult)
-	}
+// 	if categoryresult != (Article{}) {
+// 		return GCFReturnStruct(categoryresult)
+// 	}
 
-	return "false"
-}
+// 	return "false"
+// }
 
-func GCFSearchArticleByTags(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-	var tagarticle Tags
-	err := json.NewDecoder(r.Body).Decode(&tagarticle)
-	if err != nil {
-		return err.Error()
-	}
-	if tagarticle.Tag == "" {
-		return "false"
-	}
+// func GCFSearchArticleByTags(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+// 	var tagarticle Tags
+// 	err := json.NewDecoder(r.Body).Decode(&tagarticle)
+// 	if err != nil {
+// 		return err.Error()
+// 	}
+// 	if tagarticle.Tag == "" {
+// 		return "false"
+// 	}
 
-	tagresult := FindTag(mconn, collectionname, tagarticle)
+// 	tagresult := SearchByTags(mconn, collectionname, tagarticle)
 
-	if tagresult != (Tags{}) {
-		return GCFReturnStruct(tagresult)
-	}
+// 	if tagresult != (Tags{}) {
+// 		return GCFReturnStruct(tagresult)
+// 	}
 
-	return "false"
-}
+// 	return "false"
+// }
 
-func GCFSearchArticleByUserId(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-	var userarticle Article
-	err := json.NewDecoder(r.Body).Decode(&userarticle)
-	if err != nil {
-		return err.Error()
-	}
-	if userarticle.Author == "" {
-		return "false"
-	}
+// func GCFSearchArticleByUserId(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+// 	var userarticle Article
+// 	err := json.NewDecoder(r.Body).Decode(&userarticle)
+// 	if err != nil {
+// 		return err.Error()
+// 	}
+// 	if userarticle.Author == "" {
+// 		return "false"
+// 	}
 
-	author := FindAuthor(mconn, collectionname, userarticle)
+// 	author := FindAuthor(mconn, collectionname, userarticle)
 
-	if author != (Article{}) {
-		return GCFReturnStruct(author)
-	}
+// 	if author != (Article{}) {
+// 		return GCFReturnStruct(author)
+// 	}
 
-	return "false"
-}
+// 	return "false"
+// }
 
 // func GCFImageUploader(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 // 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
