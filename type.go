@@ -1,5 +1,7 @@
 package berkatbepkg
 
+import "time"
+
 type RandomNumber struct {
 	random int
 }
@@ -9,12 +11,12 @@ type articleID struct {
 }
 
 type Article struct {
-	Author   string  `json:"author" bson:"author"`
-	Title    string  `json:"title" bson:"title"`
-	Category string  `json:"category" bson:"category"`
-	Tags     Tags    `json:"tags" bson:"tags"`
-	Content  Content `json:"contect" bson:"content"`
-	// Date     time.Time `json:"date" bson:"date"`
+	Author   string     `json:"author" bson:"author"`
+	Title    string     `json:"title" bson:"title"`
+	Category string     `json:"category" bson:"category"`
+	Tags     Tags       `json:"tags" bson:"tags"`
+	Content  Content    `json:"contect" bson:"content"`
+	Date     time.Month `json:"date" bson:"date"`
 }
 
 type Tags struct {
@@ -26,14 +28,6 @@ type Content struct {
 	Paragraph    string `json:"paragraph" bson:"paragraph"`
 	VideoContent string `json:"video_link" bson:"video_link"` // If available, the video will automatically declared to be embedded.
 }
-
-// type VideoArticle struct {
-// 	Author   string `json:"author" bson:"author"`
-// 	Title    string `json:"title" bson:"title"`
-// 	Category string `json:"category" bson:"category"`
-// 	Tags     string `json:"tags" bson:"tags"`
-// 	Video    string `json:"video" bson:"video"`
-// }
 
 type User struct {
 	UserID        RandomNumber `json:"user_id" bson:"user_id"`

@@ -48,10 +48,30 @@ func TestPostArticle(t *testing.T) {
 	PostArticle(mconn, "articleSet", dataarticle)
 }
 
+func TestDeleteArticle(t *testing.T) {
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	var dataarticle Article
+	dataarticle.Title = "Tips : Memasang Kaca Film Mobil"
+	DeleteArticle(mconn, "articleSet", dataarticle)
+}
+
 func TestGetArticle(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	dataarticle := GetArticle(mconn, "articleSet")
 	fmt.Println(dataarticle)
+}
+
+func TestGetByLastDate(t *testing.T) {
+	var dataarticle Article
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	GetByLastDate(mconn, "articleSet", dataarticle)
+}
+
+func TestGetOneArticle(t *testing.T) {
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	var dataarticle Article
+	dataarticle.Title = "Tips : Memasang Kaca Film Mobil"
+	GetOneArticle(mconn, "articleSet", dataarticle)
 }
 
 func TestSearchByCategory(t *testing.T) {

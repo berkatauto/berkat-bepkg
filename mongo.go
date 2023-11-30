@@ -42,11 +42,6 @@ func SearchByTags(mongoconn *mongo.Database, collection string, searchBy Article
 	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
 }
 
-// func ResultArticle(mongoconn *mongo.Database, collection string, resultsearch Article) Article {
-// 	showresult := atdb.GetAllDoc[Article](mongoconn, collection)
-
-// }
-
 func GetAllUser(mongoconn *mongo.Database, collection string) []User {
 	user := atdb.GetAllDoc[[]User](mongoconn, collection)
 	return user
@@ -65,6 +60,16 @@ func PostArticle(mongoconn *mongo.Database, collection string, articleData Artic
 func GetArticle(mongoconn *mongo.Database, collection string) []Article {
 	tampilartikel := atdb.GetAllDoc[[]Article](mongoconn, collection)
 	return tampilartikel
+}
+
+func GetOneArticle(mongoconn *mongo.Database, collection string, articleData Article) Article {
+	filter := bson.M{"title": articleData.Title}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
+}
+
+func GetByLastDate(mongoconn *mongo.Database, collection string, articleData Article) Article {
+	filter := bson.M{"date": articleData.Date}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
 }
 
 func UpdateArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {

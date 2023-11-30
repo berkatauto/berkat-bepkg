@@ -15,15 +15,6 @@ func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
 	return GCFReturnStruct(dataarticle)
 }
 
-// Ini masih kepakai, jangan dihapus dulu
-// func UserRandomNumber(randomnumber string) {
-// 	source := rand.NewSource(time.Now().UnixNano())
-// 	rand_source := rand.New(source)
-// 	for i := 0; i < 5; i++ {
-// 		rand_num := rand_source.Int()
-// 	}
-// }
-
 func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	var Response Credential
 	Response.Status = false
@@ -70,12 +61,6 @@ func GCFCreateUser(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 
 	return GCFReturnStruct(datauser)
 }
-
-// func generateRandomUserID(MONGOCONNSTRINGENV, dbname, collectionname) int {
-// 	mconn := SetConnection(MONGOCONNSTRINGENV)
-// 	rand.Seed(time.Now().UnixNano())
-// 	return rand.Intn(11) // You can adjust the range as needed
-// }
 
 func GCFCreateHandlerTokenPaseto(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -193,6 +178,23 @@ func GCFSearchByAuthor(MONGOCONNSTRINGENV, dbname, collectionname string, r *htt
 	return GCFReturnStruct(find)
 }
 
+func GCFGetOneArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var searcharticle Article
+	err := json.NewDecoder(r.Body).Decode(&searcharticle)
+	if err != nil {
+		return err.Error()
+	}
+	find := GetOneArticle(mconn, collectionname, searcharticle)
+	return GCFReturnStruct(find)
+}
+
+// func GetByLastDate(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+// 	dataarticle := GetByLastDate(mconn, collectionname)
+// 	return GCFReturnStruct(dataarticle)
+// }
+
 func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	var newarticle Article
@@ -206,6 +208,18 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	response := GCFReturnStruct(newarticle)
 	// response += "PASETO Value: " + pasetoValue
 	PostArticle(mconn, collectionname, newarticle)
+	return response
+}
+
+func GCFDeleteArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var deleteArticle Article
+	err := json.NewDecoder(r.Body).Decode(&deleteArticle)
+	if err != nil {
+		return err.Error()
+	}
+	response := GCFReturnStruct(deleteArticle)
+	DeleteArticle(mconn, collectionname, deleteArticle)
 	return response
 }
 
