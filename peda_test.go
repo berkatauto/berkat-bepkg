@@ -36,7 +36,7 @@ func TestPostArticle(t *testing.T) {
 	tagged.Tag = "Sejarah, " + "Ilmu Pengetahuan, " + "Teknologi, " + "Pendidikan" + "Mobil, " + "Motor, " + "Kendaraan"
 	// Content
 	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-	isikonten.VideoContent = "NVI"
+	// isikonten.VideoContent = "NVI"
 	// Craft All to new Article
 	dataarticle.articleID = getID
 	dataarticle.Author = "Random Person"

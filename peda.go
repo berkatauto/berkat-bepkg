@@ -3,13 +3,10 @@ package berkatbepkg
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/whatsauth/watoken"
-	"go.mongodb.org/mongo-driver/mongo/gridfs"
 )
 
 func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
@@ -73,6 +70,12 @@ func GCFCreateUser(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 
 	return GCFReturnStruct(datauser)
 }
+
+// func generateRandomUserID(MONGOCONNSTRINGENV, dbname, collectionname) int {
+// 	mconn := SetConnection(MONGOCONNSTRINGENV)
+// 	rand.Seed(time.Now().UnixNano())
+// 	return rand.Intn(11) // You can adjust the range as needed
+// }
 
 func GCFCreateHandlerTokenPaseto(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -165,6 +168,25 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	return response
 }
 
+func GCFUpdateArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request, newData Article) error {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	currentEdit := 
+	var newarticle Article
+	err := json.NewDecoder(r.Body).Decode(&newarticle)
+	if err != nil {
+		return err.Error()
+	}
+
+	// Get PASETO Header Value
+	// pasetoValue := r.Header.Set("PASETOPRIVATEKEYENV")
+	// Post The Article
+	updating := GCFReturnStruct(newarticle)
+	response := "Update Successful."
+	// response += "PASETO Value: " + pasetoValue
+	UpdateArticle(mconn, collectionname, newarticle)
+	return updating, nil
+}
+
 // func GCFBuildContent(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 
 // }
@@ -209,36 +231,36 @@ func GCFSearchArticleByUserId(MONGOCONNSTRINGENV, dbname, collectionname string,
 	return "false"
 }
 
-func GCFImageUploader(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+// func GCFImageUploader(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 
-	// Read the image file
-	imagePath := "path/to/your/image.jpg"
-	imageData, err := ioutil.ReadFile(imagePath)
-	if err != nil {
-		log.Fatal(err)
-	}
+// 	// Read the image file
+// 	imagePath := "path/to/your/image.jpg"
+// 	imageData, err := ioutil.ReadFile(imagePath)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	bucket, err := gridfs.NewBucket(mconn)
-	if err != nil {
-		log.Fatal(err)
-	}
+// 	bucket, err := gridfs.NewBucket(mconn)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	// Create a file in the GridFS bucket
-	uploadStream, err := bucket.OpenUploadStream("image.jpg")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer uploadStream.Close()
+// 	// Create a file in the GridFS bucket
+// 	uploadStream, err := bucket.OpenUploadStream("image.jpg")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer uploadStream.Close()
 
-	// Write the image data to the GridFS file
-	_, err = uploadStream.Write(imageData)
-	if err != nil {
-		log.Fatal(err)
-	}
+// 	// Write the image data to the GridFS file
+// 	_, err = uploadStream.Write(imageData)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	fmt.Println("Image Upload Success.")
+// 	fmt.Println("Image Upload Success.")
 
-	return "false" // Add this line to fix the "missing return" error
+// 	return "false" // Add this line to fix the "missing return" error
 
-}
+// }

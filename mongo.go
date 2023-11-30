@@ -17,11 +17,6 @@ func SetConnection(MONGOCONNSTRINGENV, dbname string) *mongo.Database {
 	return atdb.MongoConnect(DBmongoinfo)
 }
 
-func GetArticle(mongoconn *mongo.Database, collection string) []Article {
-	tampilartikel := atdb.GetAllDoc[[]Article](mongoconn, collection)
-	return tampilartikel
-}
-
 func GetNameAndPassowrd(mongoconn *mongo.Database, collection string) []User {
 	user := atdb.GetAllDoc[[]User](mongoconn, collection)
 	return user
@@ -52,6 +47,19 @@ func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User
 
 func PostArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
 	return atdb.InsertOneDoc(mongoconn, collection, articleData)
+}
+
+func GetArticle(mongoconn *mongo.Database, collection string) []Article {
+	tampilartikel := atdb.GetAllDoc[[]Article](mongoconn, collection)
+	return tampilartikel
+}
+
+func UpdateArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
+	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"article_id": articleData.articleID}, articleData)
+}
+
+func DeleteArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
+	return atdb.DeleteOneDoc(mongoconn, collection, bson.M{"article_id": articleData.articleID})
 }
 
 func CreateNewUserRole(mongoconn *mongo.Database, collection string, userdata User) interface{} {
@@ -87,6 +95,7 @@ func CreateUserAndAddedToken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Databa
 	// Update the user data in the database
 	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"username": userdata.Username}, userdata)
 }
+
 func FindAuthor(mongoconn *mongo.Database, collection string, author Article) Article {
 	filter := bson.M{
 		"author": author.Author,
