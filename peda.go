@@ -223,29 +223,17 @@ func GCFDeleteArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http
 	return response
 }
 
-// func GCFUpdateArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-// 	var content Content
-// 	err := json.NewDecoder(r.Body).Decode(&content)
-// 	if err != nil {
-// 		return err.Error()
-// 	}
-// 	// Perform content building logic here
-
-// 	// Update the article
-// 	var updateArticle Article
-// 	err := json.NewDecoder(r.Body).Decode(&updateArticle)
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	response := GCFReturnStruct(updateArticle)
-// 	UpdateArticle(mconn, collectionname, updateArticle)
-// 	return response, nil
-// }
-
-// func GCFBuildContent(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-
-// }
+func GCFUpdateArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var updateArticle Article
+	err := json.NewDecoder(r.Body).Decode(&updateArticle)
+	if err != nil {
+		return err.Error()
+	}
+	response := GCFReturnStruct(updateArticle)
+	UpdateArticle(mconn, collectionname, updateArticle)
+	return response
+}
 
 // func SearchArticleByCategory(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 // 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -305,38 +293,4 @@ func GCFDeleteArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http
 // 	}
 
 // 	return "false"
-// }
-
-// func GCFImageUploader(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-
-// 	// Read the image file
-// 	imagePath := "path/to/your/image.jpg"
-// 	imageData, err := ioutil.ReadFile(imagePath)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	bucket, err := gridfs.NewBucket(mconn)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	// Create a file in the GridFS bucket
-// 	uploadStream, err := bucket.OpenUploadStream("image.jpg")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	defer uploadStream.Close()
-
-// 	// Write the image data to the GridFS file
-// 	_, err = uploadStream.Write(imageData)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	fmt.Println("Image Upload Success.")
-
-// 	return "false" // Add this line to fix the "missing return" error
-
 // }
