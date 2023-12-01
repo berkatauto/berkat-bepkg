@@ -3,6 +3,7 @@ package berkatbepkg
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/aiteung/atdb"
 	"github.com/whatsauth/watoken"
@@ -31,6 +32,7 @@ func TestPostArticle(t *testing.T) {
 	var dataarticle Article
 	var tagged Tags
 	var isikonten Content
+	var date = time.Now()
 	// var getID RandomNumber
 	// Tags
 	tagged.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil," + "Motor"
@@ -38,20 +40,30 @@ func TestPostArticle(t *testing.T) {
 	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
 	isikonten.VideoContent = "NVI"
 	// Craft All to new Article
+	dataarticle.Author = "Jonathan Suhendar"
+	dataarticle.Title = "Belajar : Cara Memasang Kaca Film Mobil"
+	dataarticle.Category = "Belajar Otomotif"
+	dataarticle.Tags = tagged
+	dataarticle.Content = isikonten
+	dataarticle.Date = date.UTC()
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	PostArticle(mconn, "articleSet", dataarticle)
+}
+
+func TestUpdateArticle(t *testing.T) {
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	var dataarticle Article
 	dataarticle.Author = "Baba Rafi"
 	dataarticle.Title = "Tips : Memasang Kaca Film Mobil"
 	dataarticle.Category = "Tips"
-	dataarticle.Tags = tagged
-	dataarticle.Content = isikonten
-	// dataarticle.Date = time.Date.now.UTC()
-	mconn := SetConnection("MONGOSTRING", "berkatauto")
-	PostArticle(mconn, "articleSet", dataarticle)
+	dataarticle.Tags.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil"
+	UpdateArticle(mconn, "articleSet", dataarticle)
 }
 
 func TestDeleteArticle(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	var dataarticle Article
-	dataarticle.Title = "Tips : Memasang Kaca Film Mobil"
+	dataarticle.Title = "Belajar : Cara Memasang Kaca Film Mobil"
 	DeleteArticle(mconn, "articleSet", dataarticle)
 }
 
@@ -108,26 +120,6 @@ func TestSearchByTags(t *testing.T) {
 // 	// searchBy.Tags.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil"
 // 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 // 	SearchByAuthor(mconn, "articleSet", searchBy)
-// }
-
-// func TestUpdateArticle(t *testing.T) {
-// 	var dataarticle Article
-// 	var tagged Tags
-// 	var isikonten Content
-// 	// var getID RandomNumber
-// 	// Tags
-// 	tagged.Tag = "Sejarah, " + "Ilmu Pengetahuan, " + "Teknologi, " + "Pendidikan" + "Mobil, " + "Motor, " + "Kendaraan"
-// 	// Content
-// 	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-// 	// isikonten.VideoContent = "NVI"
-// 	// Updating Article
-// 	dataarticle.Author = "Random Person"
-// 	dataarticle.Title = "Pendidikan : Apa Itu Mobil?"
-// 	dataarticle.Category = "Pendidikan Otomotif"
-// 	dataarticle.Tags = tagged
-// 	dataarticle.Content = isikonten
-// 	mconn := SetConnection("MONGOSTRING", "berkatauto")
-// 	UpdateArticle(mconn, "articleSet", dataarticle)
 // }
 
 func TestGeneratePasswordHash(t *testing.T) {
