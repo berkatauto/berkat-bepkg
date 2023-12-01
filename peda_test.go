@@ -47,7 +47,7 @@ func TestPostArticle(t *testing.T) {
 	dataarticle.Content = isikonten
 	dataarticle.Date = date.UTC()
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
-	PostArticle(mconn, "articleSet", dataarticle)
+	PostArticle(mconn, "articleSet", isikonten, dataarticle)
 }
 
 func TestUpdateArticle(t *testing.T) {

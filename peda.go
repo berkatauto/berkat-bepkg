@@ -197,6 +197,7 @@ func GCFGetOneArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http
 
 func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
+	var newcontent Content
 	var newarticle Article
 	err := json.NewDecoder(r.Body).Decode(&newarticle)
 	if err != nil {
@@ -207,7 +208,7 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	// Post The Article
 	response := GCFReturnStruct(newarticle)
 	// response += "PASETO Value: " + pasetoValue
-	PostArticle(mconn, collectionname, newarticle)
+	PostArticle(mconn, collectionname, newcontent, newarticle)
 	return response
 }
 
