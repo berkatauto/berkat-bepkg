@@ -2,21 +2,18 @@ package berkatbepkg
 
 import "time"
 
-type RandomNumber struct {
-	random int
-}
-
 type articleID struct {
 	randomArticleID int
 }
 
 type Article struct {
-	Author   string    `json:"author" bson:"author"`
-	Title    string    `json:"title" bson:"title"`
-	Category string    `json:"category" bson:"category"`
-	Tags     Tags      `json:"tags" bson:"tags"`
-	Content  Content   `json:"contect" bson:"content"`
-	Date     time.Time `json:"date" bson:"date"`
+	articleID int64     `json:"article_id" bson:"article_id"`
+	Author    string    `json:"author" bson:"author"`
+	Title     string    `json:"title" bson:"title"`
+	Category  string    `json:"category" bson:"category"`
+	Tags      Tags      `json:"tags" bson:"tags"`
+	Content   Content   `json:"contect" bson:"content"`
+	Date      time.Time `json:"date" bson:"date"`
 }
 
 type Tags struct {
@@ -26,17 +23,17 @@ type Tags struct {
 type Content struct {
 	// ImageHeader  base64.Encoding `bson:"image_encode"`
 	Paragraph    string `json:"paragraph" bson:"paragraph"`
-	VideoContent string `json:"video_link" bson:"video_link"` // If available, the video will automatically declared to be embedded.
+	VideoContent string `json:"video_link,omiempty" bson:"video_link,omiempty"` // If available, the video will automatically declared to be embedded.
 }
 
 type User struct {
-	UserID        RandomNumber `json:"user_id" bson:"user_id"`
-	Fullname      string       `json:"fullname" bson:"fullname"`
-	Username      string       `json:"username" bson:"username"`
-	Password      string       `json:"password" bson:"password"`
-	JournalStatus bool         `json:"journal_bool" bson:"journal_bool"`
-	Token         string       `json:"token,omitempty" bson:"token,omitempty"`
-	Role          string       `json:"role,omitempty" bson:"role,omitempty"`
+	UserID        int64  `json:"user_id" bson:"user_id"`
+	Fullname      string `json:"fullname" bson:"fullname"`
+	Username      string `json:"username" bson:"username"`
+	Password      string `json:"password" bson:"password"`
+	JournalStatus bool   `json:"journal_bool" bson:"journal_bool"`
+	Token         string `json:"token,omitempty" bson:"token,omitempty"`
+	Role          string `json:"role,omitempty" bson:"role,omitempty"`
 }
 
 type Credential struct {
