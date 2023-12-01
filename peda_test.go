@@ -21,11 +21,22 @@ func TestCreateNewUserRole(t *testing.T) {
 	var userdata User
 	userdata.Fullname = "Rachma Nurhaliza"
 	userdata.Username = "rachma"
-	userdata.Password = "r123"
+	userdata.Password = "rachma123"
 	userdata.JournalStatus = true
 	userdata.Role = "admin"
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	CreateNewUserRole(mconn, "userLogin", userdata)
+}
+
+func TestCreateUserWToken(t *testing.T) {
+	var userdata User
+	userdata.Fullname = "Rachma Nurhaliza"
+	userdata.Username = "rachmanurhaliza"
+	userdata.Password = "rachma123"
+	userdata.JournalStatus = true
+	userdata.Role = "admin"
+	mconn := SetConnection("MONGOSTRING", "berkatauto")
+	CreateUserAndAddedToken("PASETOPRIVATEKEY", mconn, "userLogin", userdata)
 }
 
 func TestPostArticle(t *testing.T) {

@@ -55,7 +55,14 @@ func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collec
 		return hashErr.Error()
 	}
 	datauser.Password = hashedPassword
+	CreateNewUserRole(mconn, collectionname, datauser)
 
+	// Create a token for the user
+	paseto, err := watoken.Encode(datauser.Username, os.Getenv(PASETOPRIVATEKEYENV))
+	if err != nil {
+		return err.Error()
+	}
+	datauser.Token = paseto
 	CreateUserAndAddedToken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
 	return GCFReturnStruct(datauser)
 }
