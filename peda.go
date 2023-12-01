@@ -3,7 +3,6 @@ package berkatbepkg
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"os"
 
@@ -42,9 +41,9 @@ func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionn
 	return GCFReturnStruct(Response)
 }
 
-func RandomNumber() {
-
-}
+// func RandomNumber() {
+// 	generateNumber := rand.New(rand.NewSource(10))
+// }
 
 func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -62,12 +61,11 @@ func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collec
 	datauser.Password = hashedPassword
 	CreateNewUserRole(mconn, collectionname, datauser)
 
-	randomNumber := rand.New(rand.NewSource(10))
-	generateid, err := randomNumber.Read(uint64)
-	if err != nil {
-		return err.Error()
-	}
-	newId := int(generateid)
+	// generateid, err := RandomNumber(generateNumber)
+	// if err != nil {
+	// 	return err.Error()
+	// }
+	// newId := int(generateid)
 
 	// Create a token for the user
 	paseto, err := watoken.Encode(datauser.Username, os.Getenv(PASETOPRIVATEKEYENV))
@@ -76,7 +74,7 @@ func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collec
 	}
 	datauser.Token = paseto
 	CreateUserAndAddedToken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
-	fmt.Println("New User: ", newId)
+	fmt.Println("Create New User Succesfully.")
 	return GCFReturnStruct(datauser)
 }
 
