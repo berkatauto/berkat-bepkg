@@ -54,7 +54,9 @@ func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User
 }
 
 func PostArticle(mongoconn *mongo.Database, collection string, contentData Content, articleData Article) interface{} {
+	articleData.Content = contentData
 	return atdb.InsertOneDoc(mongoconn, collection, articleData)
+
 }
 
 func GetArticle(mongoconn *mongo.Database, collection string) []Article {
