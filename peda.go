@@ -25,7 +25,7 @@ func DecodeBase64String(data string) string {
 	return string(decoded)
 }
 
-func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+func GCFLoginHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	var Response Credential
 	Response.Status = false
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -44,7 +44,7 @@ func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionn
 				Response.Token = tokenstring
 			}
 		} else {
-			Response.Message = "Password Salah! Silahkan Coba Lagi."
+			Response.Message = "Invalid Password"
 		}
 	}
 	return GCFReturnStruct(Response)
@@ -62,18 +62,11 @@ func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collec
 	hashedPassword, hashErr := HashPassword(datauser.Password)
 	if hashErr != nil {
 		return hashErr.Error()
+	} else {
+		Response.Message = "Account Created Successfull!"
 	}
 	datauser.Password = hashedPassword
-	CreateNewUserRole(mconn, collectionname, datauser)
-
-	// Create a token for the user
-	paseto, err := watoken.Encode(datauser.Username, os.Getenv(PASETOPRIVATEKEYENV))
-	if err != nil {
-		return err.Error()
-	}
-	datauser.Token = paseto
 	CreateUserAndAddedToken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
-	fmt.Println("Create New User Succesfully.")
 	return GCFReturnStruct(datauser)
 }
 
@@ -214,19 +207,20 @@ func GCFSearchByAuthor(MONGOCONNSTRINGENV, dbname, collectionname string, r *htt
 	return GCFReturnStruct(find)
 }
 
-func GCFGetOneArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+func GCFLoadOneArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	var searcharticle Article
 	err := json.NewDecoder(r.Body).Decode(&searcharticle)
 	if err != nil {
 		return err.Error()
 	}
-	find := GetOneArticle(mconn, collectionname, searcharticle)
+	Load := LoadArticle(mconn, collectionname, searcharticle)
 	// Decoding the base64 string
-	find.Content.Image = DecodeBase64String(find.Content.Image)
+	Load.Content.Image = DecodeBase64String(Load.Content.Image)
 	// Date Only Load Day/Month/Year
-	find.Date = time.Date(find.Date.Year(), find.Date.Month(), find.Date.Day(), 0, 0, 0, 0, time.UTC)
-	return GCFReturnStruct(find)
+	Load.Date = time.Date(Load.Date.Year(), Load.Date.Month(), Load.Date.Day(), 0, 0, 0, 0, time.UTC)
+	return GCFReturnStruct(Load)
+	// Deploy to HTML
 }
 
 // func GetByLastDate(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {

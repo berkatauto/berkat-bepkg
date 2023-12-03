@@ -7,7 +7,7 @@ type articleID struct {
 }
 
 type Article struct {
-	articleID int       `json:"_id" bson:"_id"`
+	articleID string    `json:"_id" bson:"_id"`
 	Author    string    `json:"author" bson:"author"`
 	Title     string    `json:"title" bson:"title"`
 	Category  string    `json:"category" bson:"category"`
@@ -21,7 +21,6 @@ type Tags struct {
 }
 
 type Content struct {
-	// ImageHeader  base64.Encoding `bson:"image_encode"`
 	Paragraph    string `json:"paragraph" bson:"paragraph"`
 	Image        string `json:"image" bson:"image"`
 	VideoContent string `json:"video_link,omiempty" bson:"video_link,omiempty"` // If available, the video will automatically declared to be embedded.
@@ -42,21 +41,3 @@ type Credential struct {
 	Token   string `json:"token,omitempty" bson:"token,omitempty"`
 	Message string `json:"message,omitempty" bson:"message,omitempty"`
 }
-
-/*
-type Properties struct {
-	Name string `json:"name" bson:"name"`
-}
-
-type User struct {
-	Username string `json:"username" bson:"username"`
-	Password string `json:"password" bson:"password"`
-	Role     string `json:"role,omitempty" bson:"role,omitempty"`
-}
-
-type Credential struct {
-	Status  bool   `json:"status" bson:"status"`
-	Token   string `json:"token,omitempty" bson:"token,omitempty"`
-	Message string `json:"message,omitempty" bson:"message,omitempty"`
-}
-*/

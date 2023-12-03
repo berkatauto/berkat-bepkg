@@ -63,6 +63,15 @@ func GetArticle(mongoconn *mongo.Database, collection string) []Article {
 	return tampilartikel
 }
 
+func LoadArticle(mongoconn *mongo.Database, collection string, articleData Article) Article {
+	// Load by title if article selected
+	if articleData.Title != "" {
+		filter := bson.M{"title": articleData.Title}
+		return atdb.GetOneDoc[Article](mongoconn, collection, filter)
+	}
+	return atdb.GetOneDoc[Article](mongoconn, collection, nil)
+}
+
 func GetOneArticle(mongoconn *mongo.Database, collection string, articleData Article) Article {
 	filter := bson.M{"title": articleData.Title}
 	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
