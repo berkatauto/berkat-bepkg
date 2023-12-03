@@ -10,13 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// Sewaktu waktu ini masih bisa dipakai, jangan dihapus dulu ya.
-// func TestGCFListArticle() {
-// 	mconn := SetConnection("MONGOSTRING", "berkatauto")
-// 	dataarticle := GetArticle(mconn, "articleSet")
-// 	fmt.Println(dataarticle)
-// }
-
 func TestCreateNewUserRole(t *testing.T) {
 	var userdata User
 	userdata.Fullname = "Rachma Nurhaliza"
@@ -53,8 +46,8 @@ func TestPostArticle(t *testing.T) {
 	isikonten.Image = "https://cdn1-production-images-kly.akamaized.net/7PK316VPijt24ISrrQTQzaJK_Eg=/1200x900/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/4239659/original/011356600_1669372008-Mazda-RX7-1999-1600-01.jpg"
 	isikonten.VideoContent = "NVI"
 	// Craft All to new Article
-	dataarticle.Author = "Baba Rafi"
-	dataarticle.Title = "Tips : Merawat "
+	dataarticle.Author = "Baba Rafi Gunawan"
+	dataarticle.Title = "Tips Merawat Kendaraan Dengan Baik"
 	dataarticle.Category = "Belajar Otomotif"
 	dataarticle.Tags = tagged
 	dataarticle.Content = isikonten
@@ -150,7 +143,7 @@ func TestGeneratePrivateKeyPaseto(t *testing.T) {
 	privateKey, publicKey := watoken.GenerateKey()
 	fmt.Println(privateKey)
 	fmt.Println(publicKey)
-	hasil, err := watoken.Encode("rachma", privateKey)
+	hasil, err := watoken.Encode("superadmin", privateKey)
 	fmt.Println(hasil, err)
 }
 

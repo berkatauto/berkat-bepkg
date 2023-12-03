@@ -54,7 +54,6 @@ func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User
 }
 
 func PostArticle(mongoconn *mongo.Database, collection string, articleData Article) interface{} {
-
 	return atdb.InsertOneDoc(mongoconn, collection, articleData)
 }
 
@@ -79,6 +78,11 @@ func GetOneArticle(mongoconn *mongo.Database, collection string, articleData Art
 
 func GetByLastDate(mongoconn *mongo.Database, collection string, articleData Article) Article {
 	filter := bson.M{"date": articleData.Date}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
+}
+
+func GetByAuthor(mongoconn *mongo.Database, collection string, articleData Article) Article {
+	filter := bson.M{"author": articleData.Author}
 	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
 }
 
@@ -111,17 +115,15 @@ func CreateUserAndAddedToken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Databa
 		return err
 	}
 	userdata.Password = hashedPassword
-
 	// Insert the user data into the database
 	atdb.InsertOneDoc(mongoconn, collection, userdata)
-
+	// Generate Token
 	// Create a token for the user
 	tokenstring, err := watoken.Encode(userdata.Username, os.Getenv(PASETOPRIVATEKEYENV))
 	if err != nil {
 		return err
 	}
 	userdata.Token = tokenstring
-
 	// Update the user data in the database
 	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"username": userdata.Username}, userdata)
 }

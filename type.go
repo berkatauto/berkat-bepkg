@@ -7,13 +7,12 @@ type articleID struct {
 }
 
 type Article struct {
-	articleID string    `json:"_id" bson:"_id"`
-	Author    string    `json:"author" bson:"author"`
-	Title     string    `json:"title" bson:"title"`
-	Category  string    `json:"category" bson:"category"`
-	Tags      Tags      `json:"tags" bson:"tags"`
-	Content   Content   `json:"content" bson:"content"`
-	Date      time.Time `json:"date" bson:"date"`
+	Author   string    `json:"author" bson:"author"`
+	Title    string    `json:"title" bson:"title"`
+	Category string    `json:"category" bson:"category"`
+	Tags     Tags      `json:"tags" bson:"tags"`
+	Content  Content   `json:"content" bson:"content"`
+	Date     time.Time `json:"date" bson:"date"`
 }
 
 type Tags struct {
@@ -27,7 +26,6 @@ type Content struct {
 }
 
 type User struct {
-	UserID        int64  `json:"_id" bson:"_id"`
 	Fullname      string `json:"fullname" bson:"fullname"`
 	Username      string `json:"username" bson:"username"`
 	Password      string `json:"password" bson:"password"`

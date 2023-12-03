@@ -89,43 +89,6 @@ func GCFCreateUser(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 	return GCFReturnStruct(datauser)
 }
 
-// func GCFCreateHandlerTokenPaseto(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-// 	var datauser User
-// 	err := json.NewDecoder(r.Body).Decode(&datauser)
-// 	if err != nil {
-// 		return err.Error()
-// 	}
-// 	hashedPassword, hashErr := HashPassword(datauser.Password)
-// 	if hashErr != nil {
-// 		return hashErr.Error()
-// 	}
-// 	datauser.Password = hashedPassword
-// 	CreateNewUserRole(mconn, collectionname, datauser)
-// 	tokenstring, err := watoken.Encode(datauser.Username, os.Getenv(PASETOPRIVATEKEYENV))
-// 	if err != nil {
-// 		return err.Error()
-// 	}
-// 	datauser.Token = tokenstring
-// 	return GCFReturnStruct(datauser)
-// }
-
-// func GCFCreateAccountAndToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-// 	var datauser User
-// 	err := json.NewDecoder(r.Body).Decode(&datauser)
-// 	if err != nil {
-// 		return err.Error()
-// 	}
-// 	hashedPassword, hashErr := HashPassword(datauser.Password)
-// 	if hashErr != nil {
-// 		return hashErr.Error()
-// 	}
-// 	datauser.Password = hashedPassword
-// 	CreateUserAndAddedToken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
-// 	return GCFReturnStruct(datauser)
-// }
-
 func GCFCreateHandler(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	var datauser User
@@ -221,11 +184,11 @@ func GCFLoadOneArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *htt
 	// Deploy to HTML
 }
 
-// func GetByLastDate(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-// 	dataarticle := GetByLastDate(mconn, collectionname)
-// 	return GCFReturnStruct(dataarticle)
-// }
+func GetArticleByLastDate(MONGOCONNSTRINGENV, dbname, collectionname string) string {
+	mconn := SetConnection(MONGOCONNSTRINGENV, collectionname)
+	bylastdate := GetByLastDate(mconn, collectionname, Article{})
+	return GCFReturnStruct(bylastdate)
+}
 
 func ConvertFileToBase64(file Content) {
 	// file.ImageHeader = base64.StdEncoding.EncodeToString([]byte(file.ImageHeader))
@@ -254,6 +217,7 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	}
 	// Add category at the first line of title
 	newarticle.Title = newarticle.Category + " : " + newarticle.Title
+
 	// Add the date
 	newarticle.Date = time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), time.UTC)
 	// If Available, it will convert the image to base64
@@ -322,26 +286,6 @@ func GCFUpdateArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http
 
 // 	if tagresult != (Tags{}) {
 // 		return GCFReturnStruct(tagresult)
-// 	}
-
-// 	return "false"
-// }
-
-// func GCFSearchArticleByUserId(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
-// 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-// 	var userarticle Article
-// 	err := json.NewDecoder(r.Body).Decode(&userarticle)
-// 	if err != nil {
-// 		return err.Error()
-// 	}
-// 	if userarticle.Author == "" {
-// 		return "false"
-// 	}
-
-// 	author := FindAuthor(mconn, collectionname, userarticle)
-
-// 	if author != (Article{}) {
-// 		return GCFReturnStruct(author)
 // 	}
 
 // 	return "false"
