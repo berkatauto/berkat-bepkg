@@ -62,11 +62,10 @@ func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collec
 	hashedPassword, hashErr := HashPassword(datauser.Password)
 	if hashErr != nil {
 		return hashErr.Error()
-	} else {
-		Response.Message = "Account Created Successfull!"
 	}
 	datauser.Password = hashedPassword
 	CreateUserAndAddedToken(PASETOPRIVATEKEYENV, mconn, collectionname, datauser)
+	fmt.Println("User Creation Succesfull. User Information : ", datauser)
 	return GCFReturnStruct(datauser)
 }
 
@@ -87,7 +86,6 @@ func GCFCreateUser(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 
 	createErr := CreateNewUserRole(mconn, collectionname, datauser)
 	fmt.Println(createErr)
-
 	return GCFReturnStruct(datauser)
 }
 
