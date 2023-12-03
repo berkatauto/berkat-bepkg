@@ -43,6 +43,7 @@ func TestPostArticle(t *testing.T) {
 	var dataarticle Article
 	var tagged Tags
 	var isikonten Content
+	// var authorname User
 	var date = time.Now()
 	// var getID RandomNumber
 	// Tags
@@ -51,7 +52,7 @@ func TestPostArticle(t *testing.T) {
 	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
 	isikonten.VideoContent = "NVI"
 	// Craft All to new Article
-	dataarticle.Author = "Jonathan Suhendar"
+	dataarticle.Author = "Author"
 	dataarticle.Title = "Belajar : Cara Memasang Kaca Film Mobil"
 	dataarticle.Category = "Belajar Otomotif"
 	dataarticle.Tags = tagged

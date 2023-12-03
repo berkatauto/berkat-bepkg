@@ -7,8 +7,8 @@ type articleID struct {
 }
 
 type Article struct {
-	articleID int       `json:"article_id" bson:"article_id"`
-	Author    string    `json:"author" bson:"author"`
+	articleID int       `json:"_id" bson:"_id"`
+	Author    User      `json:"author" bson:"author"`
 	Title     string    `json:"title" bson:"title"`
 	Category  string    `json:"category" bson:"category"`
 	Tags      Tags      `json:"tags" bson:"tags"`
@@ -23,11 +23,12 @@ type Tags struct {
 type Content struct {
 	// ImageHeader  base64.Encoding `bson:"image_encode"`
 	Paragraph    string `json:"paragraph" bson:"paragraph"`
+	Image        string `json:"image" bson:"image"`
 	VideoContent string `json:"video_link,omiempty" bson:"video_link,omiempty"` // If available, the video will automatically declared to be embedded.
 }
 
 type User struct {
-	UserID        int64  `json:"user_id" bson:"user_id"`
+	UserID        int64  `json:"_id" bson:"_id"`
 	Fullname      string `json:"fullname" bson:"fullname"`
 	Username      string `json:"username" bson:"username"`
 	Password      string `json:"password" bson:"password"`

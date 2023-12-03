@@ -1,6 +1,7 @@
 package berkatbepkg
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -37,13 +38,8 @@ func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionn
 			Response.Message = "Password Salah! Silahkan Coba Lagi."
 		}
 	}
-
 	return GCFReturnStruct(Response)
 }
-
-// func RandomNumber() {
-// 	generateNumber := rand.New(rand.NewSource(10))
-// }
 
 func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -60,12 +56,6 @@ func GCFCreateUserWToken(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collec
 	}
 	datauser.Password = hashedPassword
 	CreateNewUserRole(mconn, collectionname, datauser)
-
-	// generateid, err := RandomNumber(generateNumber)
-	// if err != nil {
-	// 	return err.Error()
-	// }
-	// newId := int(generateid)
 
 	// Create a token for the user
 	paseto, err := watoken.Encode(datauser.Username, os.Getenv(PASETOPRIVATEKEYENV))
@@ -232,19 +222,29 @@ func GCFGetOneArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http
 // 	return GCFReturnStruct(dataarticle)
 // }
 
+func ConvertFileToBase64(file Content) {
+	// file.ImageHeader = base64.StdEncoding.EncodeToString([]byte(file.ImageHeader))
+	file.Image = base64.StdEncoding.EncodeToString([]byte(file.Image))
+}
+
+// If Available, it will convert the video to base64
+func UploadedVideoToBase64(file Content) {
+	file.VideoContent = base64.StdEncoding.EncodeToString([]byte(file.VideoContent))
+}
+
 func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	var newarticle Article
+	var fileConvert Content
 	err := json.NewDecoder(r.Body).Decode(&newarticle)
 	if err != nil {
 		return err.Error()
 	}
-	// Get PASETO Header Value
-	// pasetoValue := r.Header.Set("PASETOPRIVATEKEYENV")
-	// Post The Article
 	response := GCFReturnStruct(newarticle)
-	// response += "PASETO Value: " + pasetoValue
 	PostArticle(mconn, collectionname, newarticle)
+	fileConvert = newarticle.Content
+	ConvertFileToBase64(fileConvert)
+	UploadedVideoToBase64(fileConvert)
 	return response
 }
 
