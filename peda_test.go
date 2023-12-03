@@ -58,7 +58,7 @@ func TestPostArticle(t *testing.T) {
 	dataarticle.Content = isikonten
 	dataarticle.Date = date.UTC()
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
-	PostArticle(mconn, "articleSet", isikonten, dataarticle)
+	PostArticle(mconn, "articleSet", dataarticle)
 }
 
 func TestUpdateArticle(t *testing.T) {
@@ -74,7 +74,7 @@ func TestUpdateArticle(t *testing.T) {
 func TestDeleteArticle(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	var dataarticle Article
-	dataarticle.Title = "Belajar : Cara Memasang Kaca Film Mobil"
+	dataarticle.Title = "Tips : Merawat Suspensi Mobil Agar Awet"
 	DeleteArticle(mconn, "articleSet", dataarticle)
 }
 

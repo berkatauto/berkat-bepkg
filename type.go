@@ -7,12 +7,12 @@ type articleID struct {
 }
 
 type Article struct {
-	articleID int64     `json:"article_id" bson:"article_id"`
+	articleID int       `json:"article_id" bson:"article_id"`
 	Author    string    `json:"author" bson:"author"`
 	Title     string    `json:"title" bson:"title"`
 	Category  string    `json:"category" bson:"category"`
 	Tags      Tags      `json:"tags" bson:"tags"`
-	Content   Content   `json:"contect" bson:"content"`
+	Content   Content   `json:"content" bson:"content"`
 	Date      time.Time `json:"date" bson:"date"`
 }
 
