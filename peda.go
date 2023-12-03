@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/whatsauth/watoken"
 )
@@ -14,6 +15,14 @@ func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	dataarticle := GetArticle(mconn, collectionname)
 	return GCFReturnStruct(dataarticle)
+}
+
+func DecodeBase64String(data string) string {
+	decoded, err := base64.StdEncoding.DecodeString(data)
+	if err != nil {
+		return err.Error()
+	}
+	return string(decoded)
 }
 
 func GCFPostHandler(PASETOPRIVATEKEYENV, MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
@@ -213,6 +222,10 @@ func GCFGetOneArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http
 		return err.Error()
 	}
 	find := GetOneArticle(mconn, collectionname, searcharticle)
+	// Decoding the base64 string
+	find.Content.Image = DecodeBase64String(find.Content.Image)
+	// Date Only Load Day/Month/Year
+	find.Date = time.Date(find.Date.Year(), find.Date.Month(), find.Date.Day(), 0, 0, 0, 0, time.UTC)
 	return GCFReturnStruct(find)
 }
 
@@ -242,6 +255,16 @@ func GCFPostArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.R
 	}
 	response := GCFReturnStruct(newarticle)
 	PostArticle(mconn, collectionname, newarticle)
+	// Automatically If There is an Category
+	// It will be added to the tags
+	if newarticle.Category != "" {
+		newarticle.Tags.Tag = newarticle.Category
+	}
+	// Add category at the first line of title
+	newarticle.Title = newarticle.Category + " : " + newarticle.Title
+	// Add the date
+	newarticle.Date = time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), time.UTC)
+	// If Available, it will convert the image to base64
 	fileConvert = newarticle.Content
 	ConvertFileToBase64(fileConvert)
 	UploadedVideoToBase64(fileConvert)

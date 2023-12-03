@@ -50,10 +50,11 @@ func TestPostArticle(t *testing.T) {
 	tagged.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil," + "Motor"
 	// Content
 	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+	isikonten.Image = "https://cdn1-production-images-kly.akamaized.net/7PK316VPijt24ISrrQTQzaJK_Eg=/1200x900/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/4239659/original/011356600_1669372008-Mazda-RX7-1999-1600-01.jpg"
 	isikonten.VideoContent = "NVI"
 	// Craft All to new Article
-	dataarticle.Author = "Author"
-	dataarticle.Title = "Belajar : Cara Memasang Kaca Film Mobil"
+	dataarticle.Author = "Baba Rafi"
+	dataarticle.Title = "Tips : Merawat "
 	dataarticle.Category = "Belajar Otomotif"
 	dataarticle.Tags = tagged
 	dataarticle.Content = isikonten

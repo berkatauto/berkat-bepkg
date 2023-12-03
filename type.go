@@ -8,7 +8,7 @@ type articleID struct {
 
 type Article struct {
 	articleID int       `json:"_id" bson:"_id"`
-	Author    User      `json:"author" bson:"author"`
+	Author    string    `json:"author" bson:"author"`
 	Title     string    `json:"title" bson:"title"`
 	Category  string    `json:"category" bson:"category"`
 	Tags      Tags      `json:"tags" bson:"tags"`
