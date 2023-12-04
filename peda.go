@@ -11,7 +11,7 @@ import (
 	"github.com/whatsauth/watoken"
 )
 
-func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string) string {
+func GCFHandler(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 	dataarticle := GetArticle(mconn, collectionname)
 	return GCFReturnStruct(dataarticle)
@@ -234,7 +234,7 @@ func GCFDeleteArticle(MONGOCONNSTRINGENV, dbname, collectionname string, r *http
 	if err != nil {
 		return err.Error()
 	}
-	response := GCFReturnStruct(deleteArticle)
+	response := GCFReturnStruct("Deleting Successful.")
 	DeleteArticle(mconn, collectionname, deleteArticle)
 	return response
 }
