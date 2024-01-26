@@ -86,3 +86,13 @@ func HelloGetArticle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintf(w, berkatbepkg.GCFHandler("MONGOSTRING", "berkatauto", "articleSet", r))
 }
+
+func main() {
+	http.HandleFunc("/signup", HelloSignUp)
+	http.HandleFunc("/signin", HelloSignIn)
+	http.HandleFunc("/postarticle", HelloPostArticle)
+	http.HandleFunc("/editarticle", HelloEditArticle)
+	http.HandleFunc("/deletearticle", HelloDeleting)
+	http.HandleFunc("/getarticle", HelloGetArticle)
+	http.ListenAndServe(":8080", nil)
+}
