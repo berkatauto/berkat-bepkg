@@ -48,6 +48,19 @@ func HelloPostArticle(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, berkatbepkg.GCFPostArticle("MONGOSTRING", "berkatauto", "articleSet", r))
 }
 
+func HelloEditArticle(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "OPTIONS" {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Max-Age", "3600")
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, berkatbepkg.GCFUpdateArticle("MONGOSTRING", "berkatauto", "articleSet", r))
+}
+
 func HelloDeleting(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "OPTIONS" {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
