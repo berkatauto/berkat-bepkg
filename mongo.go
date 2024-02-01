@@ -1,10 +1,10 @@
 package berkatbepkg
 
 import (
+	"context"
 	"os"
 
 	"github.com/aiteung/atdb"
-	"github.com/whatsauth/watoken"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -47,9 +47,23 @@ func GetAllUser(mongoconn *mongo.Database, collection string) []User {
 	return user
 }
 
-func IsPasswordValid(mongoconn *mongo.Database, collection string, userdata User) bool {
+func FindUser(mongoconn *mongo.Database, collection string, userdata User) User {
 	filter := bson.M{"username": userdata.Username}
-	res := atdb.GetOneDoc[User](mongoconn, collection, filter)
+	return atdb.GetOneDoc[User](mongoconn, collection, filter)
+}
+
+func IsUsernameExists(MONGOSTRING, dbname string, datauser User) bool {
+	mconn := SetConnection(MONGOSTRING, dbname).Collection("userLogin")
+	filter := bson.M{"username": datauser.Username}
+
+	var userdata User
+	err := mconn.FindOne(context.Background(), filter).Decode(&userdata)
+	return err == nil
+}
+
+func IsPasswordValid(MONGOSTRING *mongo.Database, collection string, userdata User) bool {
+	filter := bson.M{"username": userdata.Username}
+	res := atdb.GetOneDoc[User](MONGOSTRING, collection, filter)
 	return CheckPasswordHash(userdata.Password, res.Password)
 }
 
@@ -96,34 +110,32 @@ func DeleteArticle(mongoconn *mongo.Database, collection string, articleData Art
 	return atdb.DeleteOneDoc(mongoconn, collection, filter)
 }
 
-func CreateNewUserRole(mongoconn *mongo.Database, collection string, userdata User) interface{} {
-	// Hash the password before storing it
-	hashedPassword, err := HashPassword(userdata.Password)
-	if err != nil {
-		return err
-	}
-	userdata.Password = hashedPassword
+// func CreateUserAndAddedToken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Database, collection string, userdata User) interface{} {
+// 	// Hash the password before storing it
+// 	hashedPassword, err := HashPassword(userdata.Password)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	userdata.Password = hashedPassword
+// 	// Insert the user data into the database
+// 	atdb.InsertOneDoc(mongoconn, collection, userdata)
+// 	// Generate Token
+// 	// Create a token for the user
+// 	tokenstring, err := watoken.Encode(userdata.Username, os.Getenv(PASETOPRIVATEKEYENV))
+// 	if err != nil {
+// 		return err
+// 	}
+// 	userdata.Token = tokenstring
+// 	// Update the user data in the database
+// 	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"username": userdata.Username}, userdata)
+// }
 
-	// Insert the user data into the database
-	return atdb.InsertOneDoc(mongoconn, collection, userdata)
-}
-
-func CreateUserAndAddedToken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Database, collection string, userdata User) interface{} {
-	// Hash the password before storing it
-	hashedPassword, err := HashPassword(userdata.Password)
-	if err != nil {
-		return err
-	}
-	userdata.Password = hashedPassword
-	// Insert the user data into the database
-	atdb.InsertOneDoc(mongoconn, collection, userdata)
-	// Generate Token
-	// Create a token for the user
-	tokenstring, err := watoken.Encode(userdata.Username, os.Getenv(PASETOPRIVATEKEYENV))
-	if err != nil {
-		return err
-	}
-	userdata.Token = tokenstring
-	// Update the user data in the database
-	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"username": userdata.Username}, userdata)
+func CreateUserAndAddedToken(MONGOCONNSTRINGEV *mongo.Database, collection string, fullname, username, password, journal_bool, role string) interface{} {
+	registraation := new(User)
+	registraation.Fullname = fullname
+	registraation.Username = username
+	registraation.Password = password
+	registraation.JournalStatus = journal_bool
+	registraation.Role = role
+	return atdb.InsertOneDoc(MONGOCONNSTRINGEV, collection, registraation)
 }

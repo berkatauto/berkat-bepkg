@@ -29,7 +29,7 @@ type User struct {
 	Fullname      string `json:"fullname" bson:"fullname"`
 	Username      string `json:"username" bson:"username"`
 	Password      string `json:"password" bson:"password"`
-	JournalStatus bool   `json:"journal_bool" bson:"journal_bool"`
+	JournalStatus string `json:"journal_bool" bson:"journal_bool"`
 	Token         string `json:"token,omitempty" bson:"token,omitempty"`
 	Role          string `json:"role,omitempty" bson:"role,omitempty"`
 }
@@ -38,4 +38,17 @@ type Credential struct {
 	Status  bool   `json:"status" bson:"status"`
 	Token   string `json:"token,omitempty" bson:"token,omitempty"`
 	Message string `json:"message,omitempty" bson:"message,omitempty"`
+}
+
+type RegisterInfo struct {
+	Message  string `json:"message,omitempty" bson:"message,omitempty"`
+	Status   bool   `json:"status" bson:"status"`
+	Fullname string `json:"fullname" bson:"fullname"`
+	Username string `json:"username" bson:"username"`
+	Password string `json:"password" bson:"password"`
+}
+
+type Whatsauth struct {
+	Username    string `json:"username" bson:"username"`
+	No_whatsapp string `json:"no_whatsapp" bson:"no_whatsapp"`
 }
