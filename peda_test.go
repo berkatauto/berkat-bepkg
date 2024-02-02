@@ -25,31 +25,30 @@ func TestCreateUserWToken(t *testing.T) {
 	userdata.Fullname = "Rachma Nurhaliza"
 	userdata.Username = "rachmanurhaliza"
 	userdata.Password = "rachma123"
+	userdata.NoHP = "081234567890"
 	userdata.JournalStatus = "true"
 	userdata.Role = "admin"
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
-	CreateUserAndAddedToken(mconn, "userLogin", userdata.Fullname, userdata.Username, userdata.Password, userdata.JournalStatus, userdata.Role)
+	CreateUserAndAddedToken(mconn, "userLogin", userdata)
 }
 
 func TestPostArticle(t *testing.T) {
 	var dataarticle Article
-	var tagged Tags
 	var isikonten Content
 	// var authorname User
 	var date = time.Now()
 	// var getID RandomNumber
 	// Tags
-	tagged.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil," + "Motor"
+	var Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil," + "Motor"
 	// Content
 	isikonten.Paragraph = "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor is nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
 	isikonten.Image = "https://cdn1-production-images-kly.akamaized.net/7PK316VPijt24ISrrQTQzaJK_Eg=/1200x900/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/4239659/original/011356600_1669372008-Mazda-RX7-1999-1600-01.jpg"
-	isikonten.VideoContent = "NVI"
 	// Craft All to new Article
 	dataarticle.Author = "Baba Rafi Gunawan"
 	dataarticle.Title = "Tips Merawat Kendaraan Dengan Baik"
 	dataarticle.Category = "Belajar Otomotif"
-	dataarticle.Tags = tagged
-	dataarticle.Content = isikonten
+	dataarticle.Tags = Tag
+	dataarticle.Content = append(dataarticle.Content, isikonten)
 	dataarticle.Date = date.UTC()
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	PostArticle(mconn, "articleSet", dataarticle)
@@ -61,7 +60,7 @@ func TestUpdateArticle(t *testing.T) {
 	dataarticle.Author = "Baba Rafi"
 	dataarticle.Title = "Tips : Memasang Kaca Film Mobil"
 	dataarticle.Category = "Tips"
-	dataarticle.Tags.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil"
+	dataarticle.Tags = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil"
 	UpdateArticle(mconn, "articleSet", dataarticle)
 }
 
@@ -113,7 +112,7 @@ func TestSearchByTags(t *testing.T) {
 	var searchBy Article
 	// searchBy.Title = "Tips : Memasang Kaca Film Mobil"
 	// searchBy.Category = "Tips"
-	searchBy.Tags.Tag = "Tips, " + "Perawatan, " + "Kendaraan, " + "Mobil"
+	searchBy.Tags = "Tips"
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	SearchByTags(mconn, "articleSet", searchBy)
 }

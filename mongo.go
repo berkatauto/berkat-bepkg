@@ -85,6 +85,11 @@ func LoadArticle(mongoconn *mongo.Database, collection string, articleData Artic
 	return atdb.GetOneDoc[Article](mongoconn, collection, nil)
 }
 
+func LoadByArticleID(mongoconn *mongo.Database, collection string, articleData Article) Article {
+	filter := bson.M{"article_id": articleData.ID}
+	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
+}
+
 func GetOneArticle(mongoconn *mongo.Database, collection string, articleData Article) Article {
 	filter := bson.M{"title": articleData.Title}
 	return atdb.GetOneDoc[Article](mongoconn, collection, filter)
@@ -110,32 +115,12 @@ func DeleteArticle(mongoconn *mongo.Database, collection string, articleData Art
 	return atdb.DeleteOneDoc(mongoconn, collection, filter)
 }
 
-// func CreateUserAndAddedToken(PASETOPRIVATEKEYENV string, mongoconn *mongo.Database, collection string, userdata User) interface{} {
-// 	// Hash the password before storing it
-// 	hashedPassword, err := HashPassword(userdata.Password)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	userdata.Password = hashedPassword
-// 	// Insert the user data into the database
-// 	atdb.InsertOneDoc(mongoconn, collection, userdata)
-// 	// Generate Token
-// 	// Create a token for the user
-// 	tokenstring, err := watoken.Encode(userdata.Username, os.Getenv(PASETOPRIVATEKEYENV))
-// 	if err != nil {
-// 		return err
-// 	}
-// 	userdata.Token = tokenstring
-// 	// Update the user data in the database
-// 	return atdb.ReplaceOneDoc(mongoconn, collection, bson.M{"username": userdata.Username}, userdata)
-// }
-
-func CreateUserAndAddedToken(MONGOCONNSTRINGEV *mongo.Database, collection string, fullname, username, password, journal_bool, role string) interface{} {
-	registraation := new(User)
-	registraation.Fullname = fullname
-	registraation.Username = username
-	registraation.Password = password
-	registraation.JournalStatus = journal_bool
-	registraation.Role = role
-	return atdb.InsertOneDoc(MONGOCONNSTRINGEV, collection, registraation)
+func CreateUserAndAddedToken(MONGOCONNSTRINGEV *mongo.Database, collection string, datauser User) interface{} {
+	// Hash the password before storing it
+	hashedPassword, err := HashPassword(datauser.Password)
+	if err != nil {
+		return err
+	}
+	datauser.Password = hashedPassword
+	return atdb.InsertOneDoc(MONGOCONNSTRINGEV, collection, datauser)
 }
