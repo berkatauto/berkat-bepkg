@@ -48,7 +48,7 @@ func TestPostArticle(t *testing.T) {
 	dataarticle.Title = "Tips Merawat Kendaraan Dengan Baik"
 	dataarticle.Category = "Belajar Otomotif"
 	dataarticle.Tags = Tag
-	dataarticle.Content = append(dataarticle.Content, isikonten)
+	dataarticle.Content = isikonten
 	dataarticle.Date = date.UTC()
 	mconn := SetConnection("MONGOSTRING", "berkatauto")
 	PostArticle(mconn, "articleSet", dataarticle)

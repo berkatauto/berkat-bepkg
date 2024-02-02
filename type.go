@@ -8,7 +8,7 @@ type Article struct {
 	Title    string    `json:"title" bson:"title"`
 	Category string    `json:"category" bson:"category"`
 	Tags     string    `json:"tags" bson:"tags"`
-	Content  []Content `json:"content" bson:"content"`
+	Content  Content   `json:"content" bson:"content"`
 	Date     time.Time `json:"date" bson:"date"`
 }
 
